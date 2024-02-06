@@ -80,3 +80,28 @@ body {
     color: #3b71ca;
 }
 /* end searchDiv */
+
+/* contentDiv */
+.contentDiv {
+    padding: 50px 20px;
+}
+/* end contentDiv */
+
+/* modalform */
+.checkboxGroup {
+    display: flex;
+    gap: 10px;
+}
+
+.checkboxGroup .form-check-label {
+    display: flex;
+    gap: 10px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    transition: all .3s;
+}
+
+.checkboxGroup .form-check-label:hover {
+    background-color: rgba(211, 211, 211, 0.6);
+}
+/* end modalform */
