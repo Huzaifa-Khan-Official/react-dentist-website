@@ -57,7 +57,8 @@ function AddAndpdatePatient({ addPatientBtn }) {
                 Close
               </button>
               <button type="submit" className="btn btn-primary" onClick={addPatientBtn}>
-                Save changes
+                {/* {isUpdate ? "Update" : "Add"}  */}
+                Add Patient
               </button>
             </div>
           </Form>

@@ -6,6 +6,9 @@ import { IoSearchCircleSharp } from "react-icons/io5";
 import { FaCirclePlus } from "react-icons/fa6";
 import Modal from './components/Modal';
 import AddAndpdatePatient from './components/AddAndpdatePatient';
+import { FaTrash, FaEdit } from "react-icons/fa";
+import PatientCard from './components/PatientCard';
+import PatientNotAdded from './components/PatientNotAdded';
 
 function App() {
   const [patients, setPatients] = useState([]);
@@ -26,10 +29,11 @@ function App() {
         totalAmount: patient.totalAmount,
         patientTime: patientTime
       }
+      console.log(patientData);
 
       await addDoc(patientsRef, patientData);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 
@@ -59,6 +63,26 @@ function App() {
     getPatients();
   }, [])
 
+  const filteredPatients = (e) => {
+    const value = e.target.value;
+
+    const patientsRef = collection(db, date);
+    const q = query(patientsRef, orderBy("patientTime", "desc"));
+
+    onSnapshot(q, (snapshot) => {
+      const patientLists = snapshot.docs.map((doc) => {
+        return {
+          id: doc.id,
+          ...doc.data()
+        };
+      });
+
+      const filteredData = patientLists.filter((patient) => patient.name.toLowerCase().includes(value.toLowerCase()));
+
+      setPatients(filteredData);
+      return filteredData;
+    })
+  }
 
   return (
     <div>
@@ -68,7 +92,7 @@ function App() {
       </div>
       <div className="searchDiv d-flex justify-content-center m-auto">
         <IoSearchCircleSharp className="searchIcon" />
-        <input type="text" className='form-control searchInput' />
+        <input type="text" className='form-control searchInput' onChange={filteredPatients}/>
         <button className="addPatientBtn" data-bs-toggle="modal"
           data-bs-target="#exampleModal">
           <FaCirclePlus className='addPatientIcon'
@@ -78,33 +102,29 @@ function App() {
 
       <AddAndpdatePatient addPatientBtn={addPatientBtn} />
       <div className="contentDiv">
-        <div className="table-responsive" style={{ display: patients.length > 0 ? "block" : "none" }}>
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">S No.</th>
-                <th scope="col">Patient Name</th>
-                <th scope="col">Work List</th>
-                <th scope="col">Total Amount</th>
-              </tr>
-            </thead>
+        {patients.length == 0 ? <PatientNotAdded /> : (
+          <div className="table-responsive" style={{ display: patients.length > 0 ? "block" : "none" }}>
+            <table className="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">S No.</th>
+                  <th scope="col">Patient Name</th>
+                  <th scope="col">Work List</th>
+                  <th scope="col">Total Amount</th>
+                  <th scope="col">Edit/Delete</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {patients.map((patient, i) => {
-                return (
-                  <tr key={patient.id}>
-                    <th scope="row">{i + 1}</th>
-                    <td>{patient.name}</td>
-                    <td>{patient.workList.join(", ")}</td>
-                    <td>{patient.totalAmount}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-
-          </table>
-
-        </div>
+              <tbody>
+                {patients.map((patient, i) => {
+                  return (
+                    <PatientCard key={patient.id} patient={patient} index={i} collectionName={date} />
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   )

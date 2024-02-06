@@ -85,6 +85,17 @@ body {
 .contentDiv {
     padding: 50px 20px;
 }
+
+.iconsDiv {
+    display: flex;
+    gap: 10px;
+    justify-content: space-evenly;
+    font-size: 18px;
+}
+
+.iconsDiv .iconClass {
+    cursor: pointer;
+}
 /* end contentDiv */
 
 /* modalform */
