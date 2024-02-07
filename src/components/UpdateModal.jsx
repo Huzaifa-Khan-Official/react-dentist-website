@@ -1,22 +1,22 @@
 import React from 'react'
 
-function Modal({ children }) {
+function UpdateModal({ children }) {
     return (
         <>
-            {<div>
+            <div>
 
                 <div
                     className="modal fade"
-                    id="exampleModal"
+                    id="updateModal"
                     tabIndex={-1}
-                    aria-labelledby="exampleModalLabel"
+                    aria-labelledby="updateModalLabel"
                     aria-hidden="true"
                 >
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h1 className="modal-title fs-5" id="exampleModalLabel">
-                                    Add Patient
+                                <h1 className="modal-title fs-5" id="updateModalLabel">
+                                    Update Modal
                                 </h1>
                                 <button
                                     type="button"
@@ -31,9 +31,9 @@ function Modal({ children }) {
                         </div>
                     </div>
                 </div>
-            </div>}
+            </div>
         </>
     )
 }
 
-export default Modal;
+export default UpdateModal;

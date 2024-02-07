@@ -4,14 +4,15 @@ import { db } from "./config/firebase"
 import { addDoc, collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import { IoSearchCircleSharp } from "react-icons/io5";
 import { FaCirclePlus } from "react-icons/fa6";
-import Modal from './components/Modal';
-import AddAndpdatePatient from './components/AddAndpdatePatient';
-import { FaTrash, FaEdit } from "react-icons/fa";
+import AddPatient from './components/AddPatient';
 import PatientCard from './components/PatientCard';
 import PatientNotAdded from './components/PatientNotAdded';
+import UpdatePatient from './components/UpdatePatient';
+import UpdateModal from './components/UpdateModal';
 
 function App() {
   const [patients, setPatients] = useState([]);
+  let [uptPatient, setuptPatient] = useState("");
 
 
   const time = new Date;
@@ -29,11 +30,9 @@ function App() {
         totalAmount: patient.totalAmount,
         patientTime: patientTime
       }
-      console.log(patientData);
 
       await addDoc(patientsRef, patientData);
     } catch (error) {
-      // console.log(error);
     }
   }
 
@@ -84,15 +83,20 @@ function App() {
     })
   }
 
+  const uptatedPatient = (patient) => {
+    setuptPatient(patient);
+  }
+
   return (
     <div>
       <Navbar />
+      <UpdatePatient uptPatient={uptPatient} />
       <div className="headingDiv">
         <h1>Patient Details</h1>
       </div>
       <div className="searchDiv d-flex justify-content-center m-auto">
         <IoSearchCircleSharp className="searchIcon" />
-        <input type="text" className='form-control searchInput' onChange={filteredPatients}/>
+        <input type="text" className='form-control searchInput' onChange={filteredPatients} />
         <button className="addPatientBtn" data-bs-toggle="modal"
           data-bs-target="#exampleModal">
           <FaCirclePlus className='addPatientIcon'
@@ -100,7 +104,7 @@ function App() {
         </button>
       </div>
 
-      <AddAndpdatePatient addPatientBtn={addPatientBtn} />
+      <AddPatient addPatientBtn={addPatientBtn} />
       <div className="contentDiv">
         {patients.length == 0 ? <PatientNotAdded /> : (
           <div className="table-responsive" style={{ display: patients.length > 0 ? "block" : "none" }}>
@@ -118,7 +122,7 @@ function App() {
               <tbody>
                 {patients.map((patient, i) => {
                   return (
-                    <PatientCard key={patient.id} patient={patient} index={i} collectionName={date} />
+                    <PatientCard key={patient.id} patient={patient} index={i} collectionName={date} uptatedPatient={uptatedPatient} />
                   )
                 })}
               </tbody>

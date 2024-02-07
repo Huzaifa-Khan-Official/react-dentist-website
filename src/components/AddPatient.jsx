@@ -2,11 +2,10 @@ import React from 'react'
 import Modal from './Modal'
 import { Field, Form, Formik } from 'formik'
 
-function AddAndpdatePatient({ addPatientBtn }) {
+function AddPatient({ addPatientBtn }) {
   return (
     <div>
-      <Modal addPatientBtn={addPatientBtn}>
-
+      <Modal>
         <Formik
           initialValues={{
             name: "",
@@ -15,11 +14,10 @@ function AddAndpdatePatient({ addPatientBtn }) {
           }}
 
           onSubmit={(values, { resetForm }) => {
-
             addPatientBtn(values);
-
             resetForm();
           }}
+
         >
           <Form>
             <div className="inputDiv mt-3">
@@ -49,15 +47,8 @@ function AddAndpdatePatient({ addPatientBtn }) {
 
 
             <div className="modal-footer mt-4">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="submit" className="btn btn-primary" onClick={addPatientBtn}>
-                {/* {isUpdate ? "Update" : "Add"}  */}
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" className="btn btn-primary">
                 Add Patient
               </button>
             </div>
@@ -68,4 +59,4 @@ function AddAndpdatePatient({ addPatientBtn }) {
   )
 }
 
-export default AddAndpdatePatient
+export default AddPatient
