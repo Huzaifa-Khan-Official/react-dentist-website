@@ -17,6 +17,7 @@ function App() {
   let [uptPatient, setuptPatient] = useState("");
   let [collectionName, setcollectionName] = useState("");
   let [grandTotal, setgrandTotal] = useState(0);
+  let [workList, setworkList] = useState([]);
 
 
   const time = new Date;
@@ -64,6 +65,29 @@ function App() {
       }
     };
 
+    const getWorks = async () => {
+      try {
+        const workListRef = collection(db, "workList");
+        const q = query(workListRef, orderBy("time", "desc"));
+
+        onSnapshot(q, (snapshot) => {
+          const workListArr = snapshot.docs.map((doc) => {
+            return {
+              id: doc.id,
+              ...doc.data()
+            };
+          });
+          setworkList(workListArr);
+          return workListArr;
+        })
+
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+
+    getWorks();
+
     getPatients();
   }, [])
 
@@ -100,7 +124,7 @@ function App() {
     setcollectionName(collectionName);
   }
 
-
+  console.log(workList);
   return (
     <div>
       <Navbar />
@@ -118,7 +142,7 @@ function App() {
         </button>
       </div>
 
-      <AddPatient addPatientBtn={addPatientBtn} />
+      <AddPatient addPatientBtn={addPatientBtn} workList={workList}/>
       <div className="contentDiv">
         {patients.length == 0 ? <PatientNotAdded /> : (
           <div className="table-responsive" style={{ display: patients.length > 0 ? "block" : "none" }}>
@@ -150,7 +174,7 @@ function App() {
           </div>
         )}
       </div>
-      <ToastContainer autoClose={2000}/>
+      <ToastContainer autoClose={2000} />
     </div>
   )
 }

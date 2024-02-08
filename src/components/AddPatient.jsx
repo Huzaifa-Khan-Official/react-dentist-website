@@ -2,7 +2,7 @@ import React from 'react'
 import Modal from './Modal'
 import { Field, Form, Formik } from 'formik'
 
-function AddPatient({ addPatientBtn }) {
+function AddPatient({ addPatientBtn, workList }) {
   return (
     <div>
       <Modal>
@@ -26,18 +26,26 @@ function AddPatient({ addPatientBtn }) {
             </div>
             <div className="inputDiv mt-3">
               <div role="group" aria-labelledby="checkbox-group" className='checkboxGroup'>
-                <label className="form-check-label">
-                  <Field type="checkbox" name="workList" value="Work 1" className="form-check-input" />
-                  Work 1
-                </label>
-                <label className="form-check-label">
+
+
+                {
+                  workList.map((value) => {
+                    return (
+                      <label className="form-check-label" key={value.id}>
+                        <Field type="checkbox" name="workList" value={value.work} className="form-check-input" />
+                        {value.work}
+                      </label>
+                    )
+                  })
+                }
+                {/* <label className="form-check-label">
                   <Field type="checkbox" name="workList" value="Work 2" className="form-check-input" />
                   Work 2
                 </label>
                 <label className="form-check-label">
                   <Field type="checkbox" name="workList" value="Work 3" className="form-check-input" />
                   Work 3
-                </label>
+                </label> */}
               </div>
             </div>
             <div className="inputDiv mt-3">

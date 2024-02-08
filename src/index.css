@@ -102,6 +102,7 @@ body {
 .checkboxGroup {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .checkboxGroup .form-check-label {
@@ -116,3 +117,35 @@ body {
     background-color: rgba(211, 211, 211, 0.6);
 }
 /* end modalform */
+
+/* dashboard */
+/* workListDiv */
+.workListDiv {
+    padding: 0 50px 50px 50px;
+}
+
+.workList {
+    list-style-type: decimal;
+}
+
+.workListDiv h3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.addWorkBtn {
+    background-color: rgba(59, 113, 202, 0.5);
+    border: 1px solid #3b71ca;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    transition: all .3s;
+}
+
+.addWorkBtn:hover {
+    background-color: #3b71ca;
+    color: white;
+}
+/* end workListDiv */
+/* end dashboard */

@@ -1,5 +1,6 @@
 import React from 'react'
 import loaderGif from "../assets/loaderGif.png";
+import { Link } from 'react-router-dom';
 
 function Navbar() {
     return (
@@ -24,14 +25,10 @@ function Navbar() {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ms-auto mb-lg-0">
                             <li className="nav-item">
-                                <a className="nav-link" aria-current="page" href="#">
-                                    Home
-                                </a>
+                                <Link to={"/"} className="nav-link">Home</Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#">
-                                    Link
-                                </a>
+                                <Link to={"/dashboard"} className="nav-link">Dashboard</Link>
                             </li>
                         </ul>
                     </div>
