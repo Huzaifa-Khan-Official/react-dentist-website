@@ -3,13 +3,14 @@ import React, { useState } from 'react'
 import { FaEdit } from 'react-icons/fa'
 import { FaTrash } from 'react-icons/fa6'
 import { db } from '../config/firebase'
-import UpdatePatient from './UpdatePatient'
+import { toast } from 'react-toastify'
 
 function PatientCard({ patient, index, collectionName, uptatedPatient }) {
 
 
     const deletePatient = async (id) => {
         try {
+            toast.success("Patient deleted successfully!");
             await deleteDoc(doc(db, collectionName, id));
         } catch (error) {
             console.log(error);
@@ -25,8 +26,8 @@ function PatientCard({ patient, index, collectionName, uptatedPatient }) {
             <td>
                 <div className="iconsDiv">
                     <FaTrash className='iconClass' onClick={() => deletePatient(patient.id)} />
-                    <FaEdit className='iconClass' onClick={() => uptatedPatient(patient)} 
-                    data-bs-toggle="modal" data-bs-target="#updateModal"     
+                    <FaEdit className='iconClass' onClick={() => uptatedPatient(patient, collectionName)}
+                        data-bs-toggle="modal" data-bs-target="#updateModal"
                     />
                 </div>
             </td>

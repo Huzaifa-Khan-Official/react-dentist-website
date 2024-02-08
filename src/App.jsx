@@ -9,10 +9,14 @@ import PatientCard from './components/PatientCard';
 import PatientNotAdded from './components/PatientNotAdded';
 import UpdatePatient from './components/UpdatePatient';
 import UpdateModal from './components/UpdateModal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [patients, setPatients] = useState([]);
   let [uptPatient, setuptPatient] = useState("");
+  let [collectionName, setcollectionName] = useState("");
+  let [grandTotal, setgrandTotal] = useState(0);
 
 
   const time = new Date;
@@ -21,6 +25,8 @@ function App() {
   const addPatientBtn = async (patient) => {
     window.$('#exampleModal').modal('hide');
     try {
+      toast.success("Patient added successfully!");
+
       const patientsRef = collection(db, date);
 
       const patientTime = time.toLocaleString();
@@ -30,7 +36,6 @@ function App() {
         totalAmount: patient.totalAmount,
         patientTime: patientTime
       }
-
       await addDoc(patientsRef, patientData);
     } catch (error) {
     }
@@ -62,6 +67,13 @@ function App() {
     getPatients();
   }, [])
 
+  useEffect(() => {
+    setgrandTotal(0);
+    patients.map((patient) => {
+      setgrandTotal(preValue => +preValue + +patient.totalAmount);
+    })
+  }, [patients]);
+
   const filteredPatients = (e) => {
     const value = e.target.value;
 
@@ -83,14 +95,16 @@ function App() {
     })
   }
 
-  const uptatedPatient = (patient) => {
+  const uptatedPatient = (patient, collectionName) => {
     setuptPatient(patient);
+    setcollectionName(collectionName);
   }
+
 
   return (
     <div>
       <Navbar />
-      <UpdatePatient uptPatient={uptPatient} />
+      <UpdatePatient uptPatient={uptPatient} collectionName={collectionName} />
       <div className="headingDiv">
         <h1>Patient Details</h1>
       </div>
@@ -108,7 +122,13 @@ function App() {
       <div className="contentDiv">
         {patients.length == 0 ? <PatientNotAdded /> : (
           <div className="table-responsive" style={{ display: patients.length > 0 ? "block" : "none" }}>
-            <table className="table table-hover">
+            <table className="table table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th scope='col' colSpan={4}>Total Amount:</th>
+                  <th>{grandTotal}</th>
+                </tr>
+              </thead>
               <thead>
                 <tr>
                   <th scope="col">S No.</th>
@@ -130,6 +150,7 @@ function App() {
           </div>
         )}
       </div>
+      <ToastContainer autoClose={2000}/>
     </div>
   )
 }
