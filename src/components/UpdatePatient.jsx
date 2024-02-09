@@ -4,7 +4,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { toast } from 'react-toastify';
 
-function UpdatePatient({ uptPatient, collectionName }) {
+function UpdatePatient({ uptPatient, collectionName, workList }) {
     let [patientName, setpatientName] = useState("");
     let [patientTA, setpatientTA] = useState(0);
     let [patientWL, setpatientWL] = useState([]);
@@ -40,6 +40,9 @@ function UpdatePatient({ uptPatient, collectionName }) {
             totalAmount: patientTA,
             patientTime: patientTime
         });
+
+        setpatientName("");
+        setpatientTA(0);
     };
 
     return (
@@ -52,17 +55,17 @@ function UpdatePatient({ uptPatient, collectionName }) {
                 <div className="inputDiv mt-3">
                     <div role="group" aria-labelledby="checkbox-group" className='checkboxGroup'>
                         {/* Check if patientworklist is defined before mapping over it */}
-                        {workarr.map((singlework, index) => (
-                            <label className="form-check-label" key={index}>
+                        {workList.map((singlework) => (
+                            <label className="form-check-label" key={singlework.id}>
                                 <input
                                     type="checkbox"
                                     name="workList"
-                                    value={singlework}
+                                    value={singlework.work}
                                     className="form-check-input updatecheckbox"
-                                    checked={patientWL.includes(singlework)}
+                                    checked={patientWL.includes(singlework.work)}
                                     onChange={handleCheckboxChange}
                                 />
-                                {singlework}
+                                {singlework.work}
                             </label>
                         ))}
                     </div>

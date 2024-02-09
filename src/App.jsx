@@ -123,12 +123,11 @@ function App() {
     setuptPatient(patient);
     setcollectionName(collectionName);
   }
-
-  console.log(workList);
+  
   return (
     <div>
       <Navbar />
-      <UpdatePatient uptPatient={uptPatient} collectionName={collectionName} />
+      <UpdatePatient uptPatient={uptPatient} collectionName={collectionName} workList={workList}/>
       <div className="headingDiv">
         <h1>Patient Details</h1>
       </div>
@@ -166,7 +165,7 @@ function App() {
               <tbody>
                 {patients.map((patient, i) => {
                   return (
-                    <PatientCard key={patient.id} patient={patient} index={i} collectionName={date} uptatedPatient={uptatedPatient} />
+                    <PatientCard key={patient.id} patient={patient} index={i} collectionName={date} uptatedPatient={uptatedPatient}/>
                   )
                 })}
               </tbody>

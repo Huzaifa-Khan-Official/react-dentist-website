@@ -26,8 +26,6 @@ function AddPatient({ addPatientBtn, workList }) {
             </div>
             <div className="inputDiv mt-3">
               <div role="group" aria-labelledby="checkbox-group" className='checkboxGroup'>
-
-
                 {
                   workList.map((value) => {
                     return (
@@ -38,14 +36,6 @@ function AddPatient({ addPatientBtn, workList }) {
                     )
                   })
                 }
-                {/* <label className="form-check-label">
-                  <Field type="checkbox" name="workList" value="Work 2" className="form-check-input" />
-                  Work 2
-                </label>
-                <label className="form-check-label">
-                  <Field type="checkbox" name="workList" value="Work 3" className="form-check-input" />
-                  Work 3
-                </label> */}
               </div>
             </div>
             <div className="inputDiv mt-3">
