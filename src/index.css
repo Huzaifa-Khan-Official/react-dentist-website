@@ -79,6 +79,7 @@ body {
 .addPatientIcon:hover {
     color: #3b71ca;
 }
+
 /* end searchDiv */
 
 /* contentDiv */
@@ -96,6 +97,40 @@ body {
 .iconsDiv .iconClass {
     cursor: pointer;
 }
+
+.iconClass:hover {
+    color: #3b71ca;
+}
+
+
+.tableData {
+    min-width: 100px;
+}
+
+.WLtableData {
+    min-width: 250px;
+}
+
+
+.table-responsive::-webkit-scrollbar {
+    width: 5px !important;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    box-shadow: inset 0 0 6px #3b71ca;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #3b71ca;
+    border-radius: 20px;
+}
+
+
+.table-responsive::-webkit-scrollbar:hover {
+    background: #3b71ca !important;
+}
+
 /* end contentDiv */
 
 /* modalform */
@@ -116,6 +151,7 @@ body {
 .checkboxGroup .form-check-label:hover {
     background-color: rgba(211, 211, 211, 0.6);
 }
+
 /* end modalform */
 
 /* dashboard */
@@ -147,5 +183,11 @@ body {
     background-color: #3b71ca;
     color: white;
 }
+
 /* end workListDiv */
+
+.workInputDiv {
+    max-width: 300px;
+}
+
 /* end dashboard */

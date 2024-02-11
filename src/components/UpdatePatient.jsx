@@ -54,7 +54,6 @@ function UpdatePatient({ uptPatient, collectionName, workList }) {
                 </div>
                 <div className="inputDiv mt-3">
                     <div role="group" aria-labelledby="checkbox-group" className='checkboxGroup'>
-                        {/* Check if patientworklist is defined before mapping over it */}
                         {workList.map((singlework) => (
                             <label className="form-check-label" key={singlework.id}>
                                 <input

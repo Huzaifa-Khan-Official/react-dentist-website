@@ -20,10 +20,10 @@ function PatientCard({ patient, index, collectionName, uptatedPatient }) {
     return (
         <tr key={patient.id}>
             <th scope="row">{index + 1}</th>
-            <td>{patient.name}</td>
-            <td>{patient.workList.join(", ")}</td>
-            <td>{patient.totalAmount}</td>
-            <td>
+            <td className='tableData'>{patient.name}</td>
+            <td className='WLtableData'>{patient.workList.join(", ")}</td>
+            <td className='tableData'>{patient.totalAmount}</td>
+            <td className='tableData'>
                 <div className="iconsDiv">
                     <FaTrash className='iconClass' onClick={() => deletePatient(patient.id)} />
                     <FaEdit className='iconClass' onClick={() => uptatedPatient(patient, collectionName)}

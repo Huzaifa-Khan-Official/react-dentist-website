@@ -11,6 +11,7 @@ import UpdatePatient from './components/UpdatePatient';
 import UpdateModal from './components/UpdateModal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import moment from 'moment';
 
 function App() {
   const [patients, setPatients] = useState([]);
@@ -21,7 +22,7 @@ function App() {
 
 
   const time = new Date;
-  const date = time.toLocaleDateString().replace(/\//g, "-");
+  const date = moment(time).format('Do MMMM YYYY');
 
   const addPatientBtn = async (patient) => {
     window.$('#exampleModal').modal('hide');
@@ -123,7 +124,7 @@ function App() {
     setuptPatient(patient);
     setcollectionName(collectionName);
   }
-  
+
   return (
     <div>
       <Navbar />
