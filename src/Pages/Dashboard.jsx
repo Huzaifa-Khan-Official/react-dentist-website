@@ -5,6 +5,7 @@ import { addDoc, collection, deleteDoc, doc, onSnapshot, orderBy, query, updateD
 import { db } from '../config/firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import { FaEdit } from 'react-icons/fa';
+import MonthWiseTotal from '../components/MonthWiseTotal';
 
 export default function Dashboard() {
     let [addWork, setaddWork] = useState(false);
@@ -152,7 +153,7 @@ export default function Dashboard() {
                 </h3>
                 <div className="workInputDiv mt-4 mb-4" style={{ display: addWork ? "block" : "none" }}>
                     <input type="text" className='form-control' placeholder='Enter work here...' value={workValue} onChange={(e) => setworkValue(e.target.value)}
-                    onKeyUp={AddInputKeyPress}
+                        onKeyUp={AddInputKeyPress}
                     />
                 </div>
                 <div className="workInputDiv mt-4 mb-4" style={{ display: uptWork ? "block" : "none" }}>
@@ -205,6 +206,8 @@ export default function Dashboard() {
                     </table>
                 </div>
             </div>
+
+            <MonthWiseTotal />
             <ToastContainer autoClose={1000} />
         </div>
     )

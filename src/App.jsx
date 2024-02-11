@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
 import { db } from "./config/firebase"
-import { addDoc, collection, onSnapshot, query, orderBy } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, query, orderBy, setDoc, doc } from "firebase/firestore";
 import { IoSearchCircleSharp } from "react-icons/io5";
 import { FaCirclePlus } from "react-icons/fa6";
 import AddPatient from './components/AddPatient';
@@ -99,6 +99,21 @@ function App() {
     })
   }, [patients]);
 
+  useEffect(() => {
+    const daysTotalAmount = async () => {
+      if (grandTotal > 0) {
+        const date = moment(time).format("Do MMMM YYYY")
+        await setDoc(doc(db, moment(time).format("YYYY"), moment(time).format("MMMM")), {
+          date: date,
+          total: grandTotal
+        });
+      }
+    }
+
+
+    daysTotalAmount()
+  }, [grandTotal])
+
   const filteredPatients = (e) => {
     const value = e.target.value;
 
@@ -128,7 +143,7 @@ function App() {
   return (
     <div>
       <Navbar />
-      <UpdatePatient uptPatient={uptPatient} collectionName={collectionName} workList={workList}/>
+      <UpdatePatient uptPatient={uptPatient} collectionName={collectionName} workList={workList} />
       <div className="headingDiv">
         <h1>Patient Details</h1>
       </div>
@@ -142,7 +157,7 @@ function App() {
         </button>
       </div>
 
-      <AddPatient addPatientBtn={addPatientBtn} workList={workList}/>
+      <AddPatient addPatientBtn={addPatientBtn} workList={workList} />
       <div className="contentDiv">
         {patients.length == 0 ? <PatientNotAdded /> : (
           <div className="table-responsive" style={{ display: patients.length > 0 ? "block" : "none" }}>
@@ -166,7 +181,7 @@ function App() {
               <tbody>
                 {patients.map((patient, i) => {
                   return (
-                    <PatientCard key={patient.id} patient={patient} index={i} collectionName={date} uptatedPatient={uptatedPatient}/>
+                    <PatientCard key={patient.id} patient={patient} index={i} collectionName={date} uptatedPatient={uptatedPatient} />
                   )
                 })}
               </tbody>
@@ -174,7 +189,7 @@ function App() {
           </div>
         )}
       </div>
-      <ToastContainer autoClose={2000} />
+      <ToastContainer autoClose={1500} />
     </div>
   )
 }
