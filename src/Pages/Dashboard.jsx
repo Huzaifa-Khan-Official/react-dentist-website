@@ -111,13 +111,13 @@ export default function Dashboard() {
             </div>
             <div className="workListDiv">
                 <h3>
-                    Work List:
+                    Treatment List:
                     <span>
                         <button className="addWorkBtn"
                             style={{ display: addWork || uptWork ? "none" : "block" }}
                             onClick={() => setaddWork(true)}
                         >
-                            Add Work
+                            Add Treatment
                         </button>
                         <div className="btnsDiv d-flex gap-2">
                             <button
@@ -132,7 +132,7 @@ export default function Dashboard() {
                                 style={{ display: addWork ? "block" : "none" }}
                                 onClick={addWorkBtn}
                             >
-                                Add Work
+                                Add Treatment
                             </button>
                             <button
                                 className="addWorkBtn"
@@ -146,7 +146,7 @@ export default function Dashboard() {
                                 style={{ display: uptWork ? "block" : "none" }}
                                 onClick={uptWorkBtn}
                             >
-                                Update Work
+                                Update Treatment
                             </button>
                         </div>
                     </span>

@@ -172,7 +172,7 @@ function App() {
                 <tr>
                   <th scope="col">S No.</th>
                   <th scope="col">Patient Name</th>
-                  <th scope="col">Work List</th>
+                  <th scope="col">Treatment List</th>
                   <th scope="col">Total Amount</th>
                   <th scope="col">Edit/Delete</th>
                 </tr>

@@ -30,6 +30,9 @@ function Navbar() {
                             <li className="nav-item">
                                 <Link to={"/dashboard"} className="nav-link">Dashboard</Link>
                             </li>
+                            <li className="nav-item">
+                                <Link to={"/clinic-expences"} className="nav-link">Clinic Expences</Link>
+                            </li>
                         </ul>
                     </div>
                 </div>

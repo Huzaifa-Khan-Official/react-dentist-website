@@ -53,6 +53,7 @@ function UpdatePatient({ uptPatient, collectionName, workList }) {
                     <input type="text" className="form-control" value={patientName} onChange={(e) => setpatientName(e.target.value)} />
                 </div>
                 <div className="inputDiv mt-3">
+                    <label className='form-label'>Treatment List:</label>
                     <div role="group" aria-labelledby="checkbox-group" className='checkboxGroup'>
                         {workList.map((singlework) => (
                             <label className="form-check-label" key={singlework.id}>
