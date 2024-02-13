@@ -1,35 +1,37 @@
 import { collection, onSnapshot, query } from 'firebase/firestore';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { db } from '../config/firebase';
 import moment from 'moment';
 
 export default function MonthWiseTotal() {
+    let [allData, setAllData] = useState([]);
     const time = new Date;
 
     useEffect(() => {
 
         const getYearData = () => {
-            const year = moment(time).format("YYYY");
+            const year = moment(time).format("MMMM YYYY");
             const q = collection(db, year);
 
-            onSnapshot(q, (snapshot) => {
-                const allData = snapshot.docs.map((doc) => {
-                    return {
-                        id: doc.id,
-                        ...doc.data()
-                    };
+            let allData = [];
+            onSnapshot(q, (data) => {
+                data.docChanges().forEach((singleData) => {
+                    allData.push(singleData.doc.data());
                 });
+            });
 
-                console.log(allData);
-            })
+            setAllData(allData);
         }
 
         getYearData()
     }, [])
 
+    // console.log(allData);
     return (
         <div style={{ padding: "0 20px" }}>
-            <h1>2024</h1>
+            <h1>
+                {moment(time).format("YYYY")}
+            </h1>
             <div className="accordion" id="accordionExample">
                 <div className="accordion-item">
                     <h2 className="accordion-header">
@@ -41,7 +43,7 @@ export default function MonthWiseTotal() {
                             aria-expanded="true"
                             aria-controls="collapseOne"
                         >
-                            February
+                            {moment(time).format("MMMM YYYY")}
                         </button>
                     </h2>
                     <div
@@ -50,12 +52,35 @@ export default function MonthWiseTotal() {
                         data-bs-parent="#accordionExample"
                     >
                         <div className="accordion-body">
-                            Hello
+                            <div className="table-responsive" style={{ display: allData.length > 0 ? "block" : "none" }}>
+                                <table className="table table-hover table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">S. No.</th>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Total Amount</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {
+                                            allData.map((v, i) => {
+                                                return (
+                                                    <tr key={i}>
+                                                        <th scope="row">{i + 1}</th>
+                                                        <td className='tableData'>{v.date}</td>
+                                                        <td className='tableData'>{v.total}</td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-        </div>
+        </div >
     )
 }

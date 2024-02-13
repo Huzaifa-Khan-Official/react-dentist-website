@@ -103,7 +103,7 @@ function App() {
     const daysTotalAmount = async () => {
       if (grandTotal > 0) {
         const date = moment(time).format("Do MMMM YYYY")
-        await setDoc(doc(db, moment(time).format("YYYY"), moment(time).format("MMMM")), {
+        await setDoc(doc(db, moment(time).format("MMMM YYYY"), date), {
           date: date,
           total: grandTotal
         });

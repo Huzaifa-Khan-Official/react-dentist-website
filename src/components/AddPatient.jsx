@@ -25,6 +25,7 @@ function AddPatient({ addPatientBtn, workList }) {
               <Field name="name" className="form-control" />
             </div>
             <div className="inputDiv mt-3">
+              <label className='form-label'>Treatment List:</label>
               <div role="group" aria-labelledby="checkbox-group" className='checkboxGroup'>
                 {
                   workList.map((value) => {
