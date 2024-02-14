@@ -6,6 +6,7 @@ import { db } from '../config/firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import { FaEdit } from 'react-icons/fa';
 import MonthWiseTotal from '../components/MonthWiseTotal';
+import WorkListComponent from '../components/WorkListComponent';
 
 export default function Dashboard() {
     let [addWork, setaddWork] = useState(false);
@@ -61,29 +62,6 @@ export default function Dashboard() {
         setworkValue("");
     };
 
-    const AddInputKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            addWorkBtn();
-        }
-    };
-
-    const uptInputKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            uptWorkBtn();
-        }
-    };
-
-    const deleteWork = async (id) => {
-        toast.success("Work deleted successfully!");
-        await deleteDoc(doc(db, "workList", id));
-    }
-
-    const updateWork = (id, workValue) => {
-        setUptWork(true);
-        setUptWorkId(id)
-        setUpWorkValue(workValue);
-    }
-
     const uptWorkBtn = async () => {
         if (uptWorkValue == "") {
             toast.error("Couldn't update an empty input!.")
@@ -110,101 +88,73 @@ export default function Dashboard() {
                 <h1>Dashboard</h1>
             </div>
             <div className="workListDiv">
-                <h3>
-                    Treatment List:
-                    <span>
-                        <button className="addWorkBtn"
-                            style={{ display: addWork || uptWork ? "none" : "block" }}
-                            onClick={() => setaddWork(true)}
-                        >
-                            Add Treatment
-                        </button>
-                        <div className="btnsDiv d-flex gap-2">
-                            <button
-                                className="addWorkBtn"
-                                style={{ display: addWork ? "block" : "none" }}
-                                onClick={() => setaddWork(false)}
-                            >
-                                X
-                            </button>
-                            <button
-                                className="addWorkBtn"
-                                style={{ display: addWork ? "block" : "none" }}
-                                onClick={addWorkBtn}
-                            >
-                                Add Treatment
-                            </button>
-                            <button
-                                className="addWorkBtn"
-                                style={{ display: uptWork ? "block" : "none" }}
-                                onClick={() => setUptWork(false)}
-                            >
-                                X
-                            </button>
-                            <button
-                                className="addWorkBtn"
-                                style={{ display: uptWork ? "block" : "none" }}
-                                onClick={uptWorkBtn}
-                            >
-                                Update Treatment
-                            </button>
-                        </div>
-                    </span>
-                </h3>
-                <div className="workInputDiv mt-4 mb-4" style={{ display: addWork ? "block" : "none" }}>
-                    <input type="text" className='form-control' placeholder='Enter work here...' value={workValue} onChange={(e) => setworkValue(e.target.value)}
-                        onKeyUp={AddInputKeyPress}
-                    />
-                </div>
-                <div className="workInputDiv mt-4 mb-4" style={{ display: uptWork ? "block" : "none" }}>
-                    <input type="text" className='form-control' placeholder='Update work here...' value={uptWorkValue} onChange={(e) => setUpWorkValue(e.target.value)}
-                        onKeyUp={uptInputKeyPress}
-                    />
-                    <input type="text" value={uptWorkId} style={{ display: "none" }} onChange={(e) => setUptWorkId(e.target.value)} />
-                </div>
-                <div className="workNotFoundDiv mt-4"
-                    style={{ display: workList.length == 0 ? "block" : "none" }}
-                >
-                    <h3>No work is added yet.</h3>
+                <div className="workerListDiv">
+                    <h3>
+                        Clinic Workers:
+                    </h3>
+
+                    <div className="table-responsive" style={{ display: workList.length > 0 ? "block" : "none" }}>
+                        <table className="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">S No.</th>
+                                    <th scope="col">Worker Name</th>
+                                    <th scope="col">Working Type</th>
+                                    <th scope="col">Edit/Delete</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Huzaifa</td>
+                                    <td>Dentist</td>
+                                    <td className='tableData'>
+                                        <div className="iconsDiv">
+                                            <FaTrash className='iconClass'
+                                            />
+                                            <FaEdit className='iconClass'
+
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Huzaifa</td>
+                                    <td>Dentist</td>
+                                    <td className='tableData'>
+                                        <div className="iconsDiv">
+                                            <FaTrash className='iconClass'
+                                            />
+                                            <FaEdit className='iconClass'
+
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>Huzaifa</td>
+                                    <td>Dentist</td>
+                                    <td className='tableData'>
+                                        <div className="iconsDiv">
+                                            <FaTrash className='iconClass'
+                                            />
+                                            <FaEdit className='iconClass'
+
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
 
-                <div className="table-responsive" style={{ display: workList.length > 0 ? "block" : "none" }}>
-                    <table className="table table-hover table-bordered">
-                        <thead>
-                            <tr>
-                                <th scope="col">S No.</th>
-                                <th scope="col">Treatment Name</th>
-                                <th scope="col">Edit/Delete</th>
-                            </tr>
-                        </thead>
+                <WorkListComponent addWork={addWork} uptWork={uptWork} setaddWork={setaddWork} addWorkBtn={addWorkBtn} setUptWork={setUptWork} uptWorkBtn={uptWorkBtn} workValue={workValue} setworkValue={setworkValue} uptWorkValue={uptWorkValue} setUpWorkValue={setUpWorkValue} uptWorkId={uptWorkId} setUptWorkId={setUptWorkId} workList={workList} />
 
-                        <tbody>
-
-                            {
-                                workList.map((value, i) => {
-                                    return (
-                                        <tr key={value.id}>
-                                            <th scope="row">{i + 1}</th>
-                                            <td>
-                                                {value.work}
-                                            </td>
-                                            <td className='tableData'>
-                                                <div className="iconsDiv">
-                                                    <FaTrash className='iconClass' onClick={() => deleteWork(value.id)}
-                                                    />
-                                                    <FaEdit className='iconClass'
-                                                        onClick={() => updateWork(value.id, value.work)}
-                                                    />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
-                </div>
             </div>
 
             <MonthWiseTotal />

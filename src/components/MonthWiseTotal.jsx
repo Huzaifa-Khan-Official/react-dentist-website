@@ -27,7 +27,6 @@ export default function MonthWiseTotal() {
         getYearData()
     }, [])
 
-    // console.log(allData);
     return (
         <div style={{ padding: "0 20px" }}>
             <h1>
