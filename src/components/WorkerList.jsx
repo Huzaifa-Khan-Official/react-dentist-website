@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, onSnapshot, orderBy, query, updateDoc } from 'firebase/firestore';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react'
 import { FaEdit } from 'react-icons/fa'
@@ -13,6 +13,7 @@ export default function WorkerList() {
     let [workerType, setWorkerType] = useState("");
     let [uptWorkerValue, setUptWorkerValue] = useState("");
     let [uptWorkerId, setUptWorkerId] = useState("");
+    let [uptWorkerType, setUptWorkerType] = useState("");
     let [workerList, setWorkerList] = useState([]);
 
 
@@ -76,9 +77,44 @@ export default function WorkerList() {
         }
     };
 
+    const uptInputKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            uptWorkerBtn();
+        }
+    };
+
     const deleteWorker = async (id) => {
         toast.success("Work deleted successfully!");
         await deleteDoc(doc(db, "workerList", id));
+    };
+
+
+    const updateWorker = (id, worker, type) => {
+        setUptWorker(true);
+        setUptWorkerId(id);
+        setUptWorkerValue(worker);
+        setUptWorkerType(type);
+    };
+
+
+    const uptWorkerBtn = async () => {
+        if (uptWorkerValue == "" || uptWorkerType == "") {
+            toast.error("Couldn't update an empty input!.");
+            setUptWorker(false);
+        } else {
+            setUptWorker(false);
+            toast.success("Worker updated successfully!")
+            const workerRef = doc(db, "workerList", uptWorkerId);
+
+            const time = new Date;
+            const formatedTime = moment(time).format("Do MMMM YYYY, h:mm:ss a");
+
+            await updateDoc(workerRef, {
+                worker: uptWorkerValue,
+                type: uptWorkerType,
+                time: formatedTime
+            });
+        }
     }
 
     return (
@@ -119,7 +155,7 @@ export default function WorkerList() {
                         <button
                             className="addWorkBtn"
                             style={{ display: uptWorker ? "block" : "none" }}
-                        // onClick={uptWorkBtn}
+                            onClick={uptWorkerBtn}
                         >
                             Update Worker
                         </button>
@@ -146,9 +182,17 @@ export default function WorkerList() {
                     </div>
                 </div>
                 <div className="workInputDiv mt-4 mb-4" style={{ display: uptWorker ? "block" : "none" }}>
-                    <input type="text" className='form-control' placeholder='Update work name...' value={uptWorkerValue} onChange={(e) => setUptWorkerValue(e.target.value)}
-                    // onKeyUp={uptInputKeyPress}
-                    />
+                    <div className='mb-3'>
+                        <input type="text" className='form-control' placeholder='Update work name...' value={uptWorkerValue} onChange={(e) => setUptWorkerValue(e.target.value)}
+                        />
+                    </div>
+                    <div className='mb-3'>
+                        <label className='form-label'>Working Type:</label>
+                        <input type="text" className='form-control' placeholder='Enter working type...' value={uptWorkerType} onChange={(e) => setUptWorkerType(e.target.value)}
+                            onKeyUp={uptInputKeyPress}
+                        />
+                    </div>
+
                     <input type="text" value={uptWorkerId} style={{ display: "none" }} onChange={(e) => setUptWorkerId(e.target.value)} />
                 </div>
             </div>
@@ -184,7 +228,7 @@ export default function WorkerList() {
                                                 <FaTrash className='iconClass' onClick={() => deleteWorker(v.id)}
                                                 />
                                                 <FaEdit className='iconClass'
-                                                    onClick={() => setUptWorker(true)}
+                                                    onClick={() => updateWorker(v.id, v.worker, v.type)}
                                                 />
                                             </div>
                                         </td>
