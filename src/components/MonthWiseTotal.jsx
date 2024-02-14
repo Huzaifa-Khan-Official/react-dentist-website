@@ -28,7 +28,7 @@ export default function MonthWiseTotal() {
     }, [])
 
     return (
-        <div style={{ padding: "0 20px" }}>
+        <div style={{ padding: "0 30px" }}>
             <h1>
                 {moment(time).format("YYYY")}
             </h1>

@@ -184,6 +184,10 @@ body {
     color: white;
 }
 
+.treatmentListDiv td, .workerListDiv  td {
+    min-width: 150px;
+}
+
 /* end workListDiv */
 
 .workInputDiv {

@@ -89,7 +89,7 @@ export default function WorkListComponent({ addWork, uptWork, setaddWork, addWor
             <div className="workNotFoundDiv mt-4"
                 style={{ display: workList.length == 0 ? "block" : "none" }}
             >
-                <h3>No work is added yet.</h3>
+                <h5>No work is added yet.</h5>
             </div>
 
 

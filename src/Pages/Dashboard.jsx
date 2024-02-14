@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { FaEdit } from 'react-icons/fa';
 import MonthWiseTotal from '../components/MonthWiseTotal';
 import WorkListComponent from '../components/WorkListComponent';
+import WorkerList from '../components/WorkerList';
 
 export default function Dashboard() {
     let [addWork, setaddWork] = useState(false);
@@ -87,71 +88,8 @@ export default function Dashboard() {
             <div className="headingDiv">
                 <h1>Dashboard</h1>
             </div>
-            <div className="workListDiv">
-                <div className="workerListDiv">
-                    <h3>
-                        Clinic Workers:
-                    </h3>
-
-                    <div className="table-responsive" style={{ display: workList.length > 0 ? "block" : "none" }}>
-                        <table className="table table-hover table-bordered">
-                            <thead>
-                                <tr>
-                                    <th scope="col">S No.</th>
-                                    <th scope="col">Worker Name</th>
-                                    <th scope="col">Working Type</th>
-                                    <th scope="col">Edit/Delete</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Huzaifa</td>
-                                    <td>Dentist</td>
-                                    <td className='tableData'>
-                                        <div className="iconsDiv">
-                                            <FaTrash className='iconClass'
-                                            />
-                                            <FaEdit className='iconClass'
-
-                                            />
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Huzaifa</td>
-                                    <td>Dentist</td>
-                                    <td className='tableData'>
-                                        <div className="iconsDiv">
-                                            <FaTrash className='iconClass'
-                                            />
-                                            <FaEdit className='iconClass'
-
-                                            />
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Huzaifa</td>
-                                    <td>Dentist</td>
-                                    <td className='tableData'>
-                                        <div className="iconsDiv">
-                                            <FaTrash className='iconClass'
-                                            />
-                                            <FaEdit className='iconClass'
-
-                                            />
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
+            <div className="workListDiv">                
+                <WorkerList />
 
                 <WorkListComponent addWork={addWork} uptWork={uptWork} setaddWork={setaddWork} addWorkBtn={addWorkBtn} setUptWork={setUptWork} uptWorkBtn={uptWorkBtn} workValue={workValue} setworkValue={setworkValue} uptWorkValue={uptWorkValue} setUpWorkValue={setUpWorkValue} uptWorkId={uptWorkId} setUptWorkId={setUptWorkId} workList={workList} />
 
