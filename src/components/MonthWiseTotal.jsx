@@ -28,28 +28,27 @@ export default function MonthWiseTotal() {
     }, [])
 
     return (
-        <div style={{ padding: "0 30px" }}>
+        <div style={{ padding: "0 30px", display: allData.length > 1 ? "block" : "none" }}>
             <h1>
                 {moment(time).format("YYYY")}
             </h1>
-            <div className="accordion" id="accordionExample">
+            <div className="accordion" id="accordionPanelsStayOpenExample">
                 <div className="accordion-item">
                     <h2 className="accordion-header">
                         <button
-                            className="accordion-button collapsed"
+                            className="accordion-button"
                             type="button"
                             data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne"
+                            data-bs-target="#panelsStayOpen-collapseOne"
                             aria-expanded="true"
-                            aria-controls="collapseOne"
+                            aria-controls="panelsStayOpen-collapseOne"
                         >
                             {moment(time).format("MMMM YYYY")}
                         </button>
                     </h2>
                     <div
-                        id="collapseOne"
+                        id="panelsStayOpen-collapseOne"
                         className="accordion-collapse collapse show"
-                        data-bs-parent="#accordionExample"
                     >
                         <div className="accordion-body">
                             <div className="table-responsive" style={{ display: allData.length > 0 ? "block" : "none" }}>

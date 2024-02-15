@@ -83,7 +83,7 @@ export default function Dashboard() {
     }
 
     return (
-        <div className='dashboardDiv'>
+        <div className='dashboardDiv mb-5'>
             <Navbar />
             <div className="headingDiv">
                 <h1>Dashboard</h1>
