@@ -10,8 +10,8 @@ export default function MonthWiseTotal() {
     useEffect(() => {
 
         const getYearData = () => {
-            const year = moment(time).format("MMMM YYYY");
-            const q = collection(db, year);
+            const month = moment(time).format("MMMM YYYY");
+            const q = collection(db, month);
 
             let allData = [];
             onSnapshot(q, (data) => {

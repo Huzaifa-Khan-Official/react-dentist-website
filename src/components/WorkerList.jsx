@@ -18,7 +18,7 @@ export default function WorkerList() {
 
 
     useEffect(() => {
-        const getWorks = async () => {
+        const getWorkers = async () => {
             try {
                 const workerListRef = collection(db, "workerList");
                 const q = query(workerListRef, orderBy("time", "desc"));
@@ -39,7 +39,7 @@ export default function WorkerList() {
             }
         }
 
-        getWorks();
+        getWorkers();
     }, [])
 
 
