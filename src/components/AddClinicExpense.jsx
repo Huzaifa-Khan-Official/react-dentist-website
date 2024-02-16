@@ -26,7 +26,7 @@ export default function AddClinicExpense({ workerList, setAddExpense }) {
     const addClinicExpense = async (data) => {
         window.$('#addClinicExpenseModal').modal('hide');
         try {
-            toast.success("Patient added successfully!");
+            toast.success("Expense added successfully!");
 
             const date = moment(time).format("Do MMMM YYYY");
             const month = moment(time).format("MMMM YYYY");
@@ -40,8 +40,9 @@ export default function AddClinicExpense({ workerList, setAddExpense }) {
                     workerVage: data.workerVage,
                     time: formatedTime
                 }
-            });            
+            });       
         } catch (error) {
+            toast.error("Something went wrong. Please try later!");
         }
         reset();
     }
@@ -91,8 +92,9 @@ export default function AddClinicExpense({ workerList, setAddExpense }) {
                                         <option disabled value={"byDefault"}>Open this select menu</option>
                                         {
                                             workerList.map((v) => {
+                                                const workerDetail = `${v.worker} / ${v.type}`;
                                                 return (
-                                                    <option value={v.worker} key={v.id}>{v.worker} / {v.type}</option>
+                                                    <option value={workerDetail} key={v.id}>{v.worker} / {v.type}</option>
                                                 )
                                             })
                                         }

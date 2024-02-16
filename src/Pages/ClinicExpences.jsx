@@ -5,6 +5,7 @@ import { collection, doc, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { db } from '../config/firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import moment from 'moment';
+import ExpenseRender from '../components/ExpenseRender';
 
 export default function ClinicExpences() {
     let [workerList, setWorkerList] = useState([]);
@@ -61,14 +62,13 @@ export default function ClinicExpences() {
         getWorkers();
     }, []);
 
-
-    console.log(allData);
     return (
         <div>
             <Navbar />
 
 
             <AddClinicExpense workerList={workerList} />
+            <ExpenseRender allData={allData}/>
 
             <ToastContainer autoClose={1500} />
         </div>

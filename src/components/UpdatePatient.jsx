@@ -28,21 +28,26 @@ function UpdatePatient({ uptPatient, collectionName, workList }) {
 
     const updatePatientfoo = async () => {
         window.$('#updateModal').modal('hide');
-        toast.success("Patient updated successfully!");
-        const patientRef = doc(db, collectionName, uptPatient.id);
+        if (!patientName || !patientTA) {
+            toast.error("Can not update empty fields!")
+            setpatientName(uptPatient?.name);
+            setpatientTA(uptPatient?.totalAmount);
+        } else {
+            toast.success("Patient updated successfully!");
+            const patientRef = doc(db, collectionName, uptPatient.id);
 
-        const time = new Date;
-        const patientTime = time.toLocaleString();
+            const time = new Date;
+            const patientTime = time.toLocaleString();
 
-        await updateDoc(patientRef, {
-            name: patientName,
-            workList: patientWL,
-            totalAmount: patientTA,
-            patientTime: patientTime
-        });
-
-        setpatientName("");
-        setpatientTA(0);
+            await updateDoc(patientRef, {
+                name: patientName,
+                workList: patientWL,
+                totalAmount: patientTA,
+                patientTime: patientTime
+            });
+            setpatientName("");
+            setpatientTA(0);
+        }
     };
 
     return (
@@ -50,29 +55,31 @@ function UpdatePatient({ uptPatient, collectionName, workList }) {
             <UpdateModal>
                 <div className="inputDiv mt-3">
                     <label htmlFor="name" className='form-label'>Patient Name:</label>
-                    <input type="text" className="form-control" value={patientName} onChange={(e) => setpatientName(e.target.value)} />
+                    <input type="text" className="form-control" value={patientName} onChange={(e) => setpatientName(e.target.value)} placeholder='Updated patient name...' />
                 </div>
                 <div className="inputDiv mt-3">
                     <label className='form-label'>Treatment List:</label>
                     <div role="group" aria-labelledby="checkbox-group" className='checkboxGroup'>
-                        {workList.map((singlework) => (
-                            <label className="form-check-label" key={singlework.id}>
-                                <input
-                                    type="checkbox"
-                                    name="workList"
-                                    value={singlework.work}
-                                    className="form-check-input updatecheckbox"
-                                    checked={patientWL.includes(singlework.work)}
-                                    onChange={handleCheckboxChange}
-                                />
-                                {singlework.work}
-                            </label>
-                        ))}
+                        {
+                            !workList.length ? <p className='mb-0'>Treatment list not found!</p> :
+                                workList.map((singlework) => (
+                                    <label className="form-check-label" key={singlework.id}>
+                                        <input
+                                            type="checkbox"
+                                            name="workList"
+                                            value={singlework.work}
+                                            className="form-check-input updatecheckbox"
+                                            checked={patientWL.includes(singlework.work)}
+                                            onChange={handleCheckboxChange}
+                                        />
+                                        {singlework.work}
+                                    </label>
+                                ))}
                     </div>
                 </div>
                 <div className="inputDiv mt-3">
                     <label htmlFor="totalAmount" className='form-label'>Total Amount:</label>
-                    <input type="number" className="form-control" value={patientTA} onChange={(e) => setpatientTA(e.target.value)} />
+                    <input type="number" className="form-control" value={patientTA} onChange={(e) => setpatientTA(e.target.value)} placeholder="Updated total amount..." />
                 </div>
                 <div className="modal-footer mt-4">
                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>

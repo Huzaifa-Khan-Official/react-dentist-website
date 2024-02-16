@@ -149,7 +149,7 @@ function App() {
       </div>
       <div className="searchDiv d-flex justify-content-center m-auto">
         <IoSearchCircleSharp className="searchIcon" />
-        <input type="text" className='form-control searchInput' onChange={filteredPatients} />
+        <input type="text" className='form-control searchInput' placeholder='Search patient...' onChange={filteredPatients} />
         <button className="addPatientBtn" data-bs-toggle="modal"
           data-bs-target="#exampleModal">
           <FaCirclePlus className='addPatientIcon'
@@ -189,7 +189,7 @@ function App() {
           </div>
         )}
       </div>
-      <ToastContainer autoClose={1500} />
+      <ToastContainer autoClose={1000} />
     </div>
   )
 }

@@ -5,8 +5,8 @@ import { array, number, object, string } from 'yup'
 
 const addPatientValidation = object().shape(
   {
-    name: string().required("Patient name is required."),
-    totalAmount: number().required("Total amount is required."),
+    name: string().required(<p className='mb-0 mt-1 text-danger'>Patient name is required.</p>),
+    totalAmount: number().required(<p className='mb-0 mt-1 text-danger'>Total amount is required.</p>),
     workList: array().required("Please select atleast one treatment.")
   }
 )
@@ -32,14 +32,15 @@ function AddPatient({ addPatientBtn, workList }) {
           <Form>
             <div className="inputDiv mt-3">
               <label htmlFor="name" className='form-label'>Patient Name:</label>
-              <Field name="name" className="form-control" />
+              <Field name="name" className="form-control" placeholder="Enter patient name..." />
               <ErrorMessage name='name'/>
             </div>
             <div className="inputDiv mt-3">
               <label className='form-label'>Treatment List:</label>
               <div role="group" aria-labelledby="checkbox-group" className='checkboxGroup'>
                 {
-                  workList.map((value) => {
+                  !workList.length ?  <p className='mb-0'>No treatment list found!</p>
+                  : workList.map((value) => {
                     return (
                       <label className="form-check-label" key={value.id}>
                         <Field type="checkbox" name="workList" value={value.work} className="form-check-input" />
@@ -48,13 +49,13 @@ function AddPatient({ addPatientBtn, workList }) {
                     )
                   })
                 }
-                <ErrorMessage name='workList'/>
+                <ErrorMessage name='workList' />
               </div>
             </div>
             <div className="inputDiv mt-3">
               <label htmlFor="totalAmount" className='form-label'>Total Amount:</label>
-              <Field type="number" name="totalAmount" className="form-control" />
-              <ErrorMessage name='totalAmount'/>
+              <Field type="number" name="totalAmount" className="form-control" placeholder="Enter total amount..."/>
+              <ErrorMessage name='totalAmount' />
             </div>
 
 
