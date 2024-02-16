@@ -34,13 +34,11 @@ export default function AddClinicExpense({ workerList, setAddExpense }) {
 
             const formatedTime = moment(time).format("Do MMMM YYYY, h:mm:ss a");
 
-            await updateDoc(doc(db, month, date), {
-                dailyExpenseData: {
-                    workerName: data.workerName,
-                    workerVage: data.workerVage,
-                    time: formatedTime
-                }
-            });       
+            await addDoc(collection(db, `${month}/${date}/dailyExpenseData/`), {
+                workerName: data.workerName,
+                workerVage: data.workerVage,
+                time: formatedTime
+            });
         } catch (error) {
             toast.error("Something went wrong. Please try later!");
         }

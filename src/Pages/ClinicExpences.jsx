@@ -14,6 +14,25 @@ export default function ClinicExpences() {
     const date = moment(time).format("Do MMMM YYYY");
     const month = moment(time).format("MMMM YYYY");
 
+    const getDailyExpense = () => {
+        try {
+            const q = collection(db, `${month}/${date}/dailyExpenseData/`);
+
+            onSnapshot(q, (snapshot) => {
+                const dailyVageList = snapshot.docs.map((doc) => {
+                    return {
+                        id: doc.id,
+                        ...doc.data()
+                    };
+                });
+
+                setAllData(dailyVageList);
+            })
+        } catch (error) {
+            toast.error(error.message);
+        }
+    }
+
     useEffect(() => {
         const getWorkers = async () => {
             try {
@@ -36,27 +55,6 @@ export default function ClinicExpences() {
             }
         };
 
-        const getDailyExpense = () => {
-            try {
-                const  q = collection(db, month);
-
-                const allData = [];
-                onSnapshot(q, (data) => {
-                    data.docChanges().forEach((singleData) => {
-                        const data = singleData.doc.data().dailyExpenseData;
-                        if (data) {
-                            allData.push(data);
-                        }
-                    });
-                });
-                setAllData(allData);
-                return allData;
-
-            } catch (error) {
-                toast.error(error.message);
-            }
-        }
-
         getDailyExpense();
 
         getWorkers();
@@ -68,7 +66,7 @@ export default function ClinicExpences() {
 
 
             <AddClinicExpense workerList={workerList} />
-            <ExpenseRender allData={allData}/>
+            <ExpenseRender allData={allData} />
 
             <ToastContainer autoClose={1500} />
         </div>
