@@ -22,6 +22,8 @@ function App() {
   let [daysArr, setDaysArr] = useState([]);
   let [isDaysArr, setIsDaysArr] = useState(false);
   let [patientAdded, setPatientAdded] = useState(false);
+  const [filtering, setFiltering] = useState(false);
+  let [filteredArr, setFilteredArr] = useState([]);
 
   const time = new Date;
   const date = moment(time).format("Do MMMM YYYY");
@@ -58,28 +60,6 @@ function App() {
     } catch (error) {
     }
   }
-
-  const getPatients = async () => {
-    try {
-      const patientsRef = collection(db, `${month}/${date}/patients/`);
-      const q = query(patientsRef, orderBy("patientTime", "desc"));
-
-      onSnapshot(q, (snapshot) => {
-        const patientLists = snapshot.docs.map((doc) => {
-          return {
-            id: doc.id,
-            ...doc.data()
-          };
-        });
-        console.log(patientLists);
-        setPatients(patientLists);
-        return patientLists;
-      })
-
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
 
   const getWorks = async () => {
     try {
@@ -135,27 +115,6 @@ function App() {
     daysTotalAmount()
   }, [grandTotal])
 
-  const filteredPatients = (e) => {
-    const value = e.target.value;
-
-    const patientsRef = collection(db, date);
-    const q = query(patientsRef, orderBy("patientTime", "desc"));
-
-    onSnapshot(q, (snapshot) => {
-      const patientLists = snapshot.docs.map((doc) => {
-        return {
-          id: doc.id,
-          ...doc.data()
-        };
-      });
-
-      const filteredData = patientLists.filter((patient) => patient.name.toLowerCase().includes(value.toLowerCase()));
-
-      setPatients(filteredData);
-      return filteredData;
-    })
-  }
-
   const uptatedPatient = (patient, collectionName) => {
     setuptPatient(patient);
     setcollectionName(collectionName);
@@ -189,10 +148,42 @@ function App() {
     setPatients(data);
   };
 
+  const filteredPatients = async (e) => {
+    const value = e.target.value;
+    if (!value) {
+      setFiltering(false);
+    } else {
+      setFiltering(true);
+    }
+
+    let filteredData = [];
+
+    await Promise.all(
+      daysArr.map(async (v) => {
+        const patientsRef = collection(db, `${month}/${v}/patients/`);
+        const q = query(patientsRef, orderBy("patientTime", "desc"));
+
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          const patientData = {
+            id: doc.id,
+            date: v,
+            ...doc.data()
+          };
+          if (patientData.name.toLowerCase().includes(value.toLowerCase())) {
+            filteredData.push(patientData);
+          }
+        });
+      })
+    );
+
+    setFilteredArr(filteredData);
+  };
+
   return (
     <div>
       <Navbar />
-      <UpdatePatient uptPatient={uptPatient} collectionName={collectionName} workList={workList} />
+      <UpdatePatient uptPatient={uptPatient} collectionName={collectionName} workList={workList} getAllData={getAllData} />
       <div className="headingDiv">
         <h1>Patient Details</h1>
       </div>
@@ -228,11 +219,19 @@ function App() {
               </thead>
 
               <tbody>
-                {patients.map((patient, i) => {
-                  return (
-                    <PatientCard key={patient.id} patient={patient} index={i} collectionName={`${month}/${patient.date}/patients/`} uptatedPatient={uptatedPatient} getAllData={getAllData}/>
-                  )
-                })}
+                {
+                  filtering ?
+                    filteredArr.map((patient, i) => {
+                      return (
+                        <PatientCard key={patient.id} patient={patient} index={i} collectionName={`${month}/${patient.date}/patients/`} uptatedPatient={uptatedPatient} getAllData={getAllData} />
+                      )
+                    }) :
+                    patients.map((patient, i) => {
+                      return (
+                        <PatientCard key={patient.id} patient={patient} index={i} collectionName={`${month}/${patient.date}/patients/`} uptatedPatient={uptatedPatient} getAllData={getAllData} />
+                      )
+                    })
+                }
               </tbody>
             </table>
           </div>

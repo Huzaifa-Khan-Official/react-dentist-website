@@ -4,7 +4,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { toast } from 'react-toastify';
 
-function UpdatePatient({ uptPatient, collectionName, workList }) {
+function UpdatePatient({ uptPatient, collectionName, workList, getAllData }) {
     let [patientName, setpatientName] = useState("");
     let [patientTA, setpatientTA] = useState(0);
     let [patientWL, setpatientWL] = useState([]);
@@ -47,6 +47,7 @@ function UpdatePatient({ uptPatient, collectionName, workList }) {
             });
             setpatientName("");
             setpatientTA(0);
+            getAllData();
         }
     };
 
