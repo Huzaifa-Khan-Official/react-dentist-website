@@ -194,9 +194,23 @@ body {
     max-width: 300px;
 }
 
+.monthWiseDate {
+    min-width: 160px;
+}
+
 /* end dashboard */
 
 .errorPara {
     color: red;
     margin: 10px 0;
 }
+
+/* clinicExpenseData */
+.workerNameData {
+    min-width: 150px;
+}
+
+.workerTimeData {
+    min-width: 250px;
+}
+/* end clinicExpenseData */

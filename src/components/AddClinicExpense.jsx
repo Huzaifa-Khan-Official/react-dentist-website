@@ -5,12 +5,11 @@ import { toast } from 'react-toastify';
 import { db } from '../config/firebase';
 import moment from 'moment';
 
-export default function AddClinicExpense({ workerList, setAddExpense }) {
+export default function AddClinicExpense({ workerList, setIsExpenseAdded, isExpenseAdded }) {
 
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
         reset
     } = useForm({
@@ -39,6 +38,8 @@ export default function AddClinicExpense({ workerList, setAddExpense }) {
                 workerVage: data.workerVage,
                 time: formatedTime
             });
+
+            setIsExpenseAdded(!isExpenseAdded);
         } catch (error) {
             toast.error("Something went wrong. Please try later!");
         }

@@ -28,7 +28,7 @@ export default function MonthWiseTotal() {
     }, [])
 
     return (
-        <div style={{ padding: "0 30px", display: allData.length > 1 ? "block" : "none" }}>
+        <div className='px-md-5 px-4' style={{display: allData.length > 1 ? "block" : "none" }}>
             <h1>
                 {moment(time).format("YYYY")}
             </h1>
@@ -67,7 +67,7 @@ export default function MonthWiseTotal() {
                                                 return (
                                                     <tr key={i}>
                                                         <th scope="row">{i + 1}</th>
-                                                        <td className='tableData'>{v.date}</td>
+                                                        <td className='monthWiseDate'>{v.date}</td>
                                                         <td className='tableData'>{v.total}</td>
                                                     </tr>
                                                 )

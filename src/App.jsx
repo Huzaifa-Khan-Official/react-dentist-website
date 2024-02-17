@@ -33,11 +33,11 @@ function App() {
     const q = collection(db, `${month}/`);
 
     onSnapshot(q, (snapshot) => {
-      const dailyVageList = snapshot.docs.map((doc) => {
+      const daysList = snapshot.docs.map((doc) => {
         return doc.id
       });
 
-      setDaysArr(dailyVageList.reverse());
+      setDaysArr(daysList.reverse());
     })
   }
 
@@ -198,7 +198,7 @@ function App() {
       </div>
 
       <AddPatient addPatientBtn={addPatientBtn} workList={workList} />
-      <div className="contentDiv">
+      <div className="contentDiv px-lg-5 px-3">
         {patients.length == 0 ? <PatientNotAdded /> : (
           <div className="table-responsive" style={{ display: patients.length > 0 ? "block" : "none" }}>
             <table className="table table-hover table-bordered">
