@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
 import { db } from "./config/firebase"
-import { addDoc, collection, onSnapshot, query, orderBy, setDoc, doc } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, query, orderBy, setDoc, doc, getDocs } from "firebase/firestore";
 import { IoSearchCircleSharp } from "react-icons/io5";
 import { FaCirclePlus } from "react-icons/fa6";
 import AddPatient from './components/AddPatient';
@@ -19,17 +19,32 @@ function App() {
   let [collectionName, setcollectionName] = useState("");
   let [grandTotal, setgrandTotal] = useState(0);
   let [workList, setworkList] = useState([]);
-
+  let [daysArr, setDaysArr] = useState([]);
+  let [isDaysArr, setIsDaysArr] = useState(false);
+  let [patientAdded, setPatientAdded] = useState(false);
 
   const time = new Date;
-  const date = moment(time).format('Do MMMM YYYY');
+  const date = moment(time).format("Do MMMM YYYY");
+  const month = moment(time).format("MMMM YYYY");
+
+  const getDays = () => {
+    const q = collection(db, `${month}/`);
+
+    onSnapshot(q, (snapshot) => {
+      const dailyVageList = snapshot.docs.map((doc) => {
+        return doc.id
+      });
+
+      setDaysArr(dailyVageList.reverse());
+    })
+  }
 
   const addPatientBtn = async (patient) => {
     window.$('#exampleModal').modal('hide');
     try {
       toast.success("Patient added successfully!");
 
-      const patientsRef = collection(db, date);
+      const patientsRef = collection(db, `${month}/${date}/patients/`);
 
       const patientTime = time.toLocaleString();
       const patientData = {
@@ -39,58 +54,65 @@ function App() {
         patientTime: patientTime
       }
       await addDoc(patientsRef, patientData);
+      setPatientAdded(!patientAdded);
     } catch (error) {
     }
   }
 
-  useEffect(() => {
-    const getPatients = async () => {
-      try {
+  const getPatients = async () => {
+    try {
+      const patientsRef = collection(db, `${month}/${date}/patients/`);
+      const q = query(patientsRef, orderBy("patientTime", "desc"));
 
-        const patientsRef = collection(db, date);
-        const q = query(patientsRef, orderBy("patientTime", "desc"));
+      onSnapshot(q, (snapshot) => {
+        const patientLists = snapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data()
+          };
+        });
+        console.log(patientLists);
+        setPatients(patientLists);
+        return patientLists;
+      })
 
-        onSnapshot(q, (snapshot) => {
-          const patientLists = snapshot.docs.map((doc) => {
-            return {
-              id: doc.id,
-              ...doc.data()
-            };
-          });
-          setPatients(patientLists);
-          return patientLists;
-        })
-
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-
-    const getWorks = async () => {
-      try {
-        const workListRef = collection(db, "workList");
-        const q = query(workListRef, orderBy("time", "desc"));
-
-        onSnapshot(q, (snapshot) => {
-          const workListArr = snapshot.docs.map((doc) => {
-            return {
-              id: doc.id,
-              ...doc.data()
-            };
-          });
-          setworkList(workListArr);
-          return workListArr;
-        })
-
-      } catch (error) {
-        console.log(error.message);
-      }
+    } catch (error) {
+      console.log(error.message);
     }
+  };
+
+  const getWorks = async () => {
+    try {
+      const workListRef = collection(db, "workList");
+      const q = query(workListRef, orderBy("time", "desc"));
+
+      onSnapshot(q, (snapshot) => {
+        const workListArr = snapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data()
+          };
+        });
+        setworkList(workListArr);
+        return workListArr;
+      })
+
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  useEffect(() => {
 
     getWorks();
 
-    getPatients();
-  }, [])
+    getDays();
+
+  }, []);
+
+  useEffect(() => {
+    getAllData();
+  }, [daysArr, isDaysArr, patientAdded])
 
   useEffect(() => {
     setgrandTotal(0);
@@ -109,7 +131,6 @@ function App() {
         });
       }
     }
-
 
     daysTotalAmount()
   }, [grandTotal])
@@ -139,6 +160,34 @@ function App() {
     setuptPatient(patient);
     setcollectionName(collectionName);
   }
+
+  const getAllData = async () => {
+
+    if (daysArr) {
+      setIsDaysArr(true);
+    }
+
+    let data = [];
+
+    await Promise.all(
+      daysArr.map(async (v) => {
+        const patientsRef = collection(db, `${month}/${v}/patients/`);
+        const q = query(patientsRef, orderBy("patientTime", "desc"));
+
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          data.push({
+            id: doc.id,
+            date: v,
+            ...doc.data()
+          });
+        });
+
+      })
+
+    );
+    setPatients(data);
+  };
 
   return (
     <div>
@@ -181,7 +230,7 @@ function App() {
               <tbody>
                 {patients.map((patient, i) => {
                   return (
-                    <PatientCard key={patient.id} patient={patient} index={i} collectionName={date} uptatedPatient={uptatedPatient} />
+                    <PatientCard key={patient.id} patient={patient} index={i} collectionName={`${month}/${patient.date}/patients/`} uptatedPatient={uptatedPatient} getAllData={getAllData}/>
                   )
                 })}
               </tbody>

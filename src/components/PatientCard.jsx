@@ -5,13 +5,14 @@ import { FaTrash } from 'react-icons/fa6'
 import { db } from '../config/firebase'
 import { toast } from 'react-toastify'
 
-function PatientCard({ patient, index, collectionName, uptatedPatient }) {
+function PatientCard({ patient, index, collectionName, uptatedPatient, getAllData }) {
 
 
     const deletePatient = async (id) => {
         try {
-            toast.success("Patient deleted successfully!");
             await deleteDoc(doc(db, collectionName, id));
+            toast.success("Patient deleted successfully!");
+            getAllData();
         } catch (error) {
             console.log(error);
         }

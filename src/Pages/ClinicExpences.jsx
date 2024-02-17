@@ -16,18 +16,18 @@ export default function ClinicExpences() {
 
     const getDailyExpense = () => {
         try {
-            const q = collection(db, `${month}/${date}/dailyExpenseData/`);
+                const q = collection(db, `${month}/${date}/dailyExpenseData/`);
 
-            onSnapshot(q, (snapshot) => {
-                const dailyVageList = snapshot.docs.map((doc) => {
-                    return {
-                        id: doc.id,
-                        ...doc.data()
-                    };
-                });
+                onSnapshot(q, (snapshot) => {
+                    const dailyVageList = snapshot.docs.map((doc) => {
+                        return {
+                            id: doc.id,
+                            ...doc.data()
+                        };
+                    });
 
-                setAllData(dailyVageList);
-            })
+                    setAllData(dailyVageList);
+                })
         } catch (error) {
             toast.error(error.message);
         }
