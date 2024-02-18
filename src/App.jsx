@@ -105,9 +105,9 @@ function App() {
   useEffect(() => {
     const daysTotalAmount = async () => {
       if (grandTotal > 0) {
-        const date = moment(time).format("Do MMMM YYYY")
-        await setDoc(doc(db, moment(time).format("MMMM YYYY"), date), {
-          date: date,
+        const month = moment(time).format("MMMM YYYY")
+        await setDoc(doc(db, month, "total"), {
+          month: month,
           total: grandTotal
         });
       }
@@ -238,7 +238,7 @@ function App() {
           </div>
         )}
       </div>
-      <PreReceivedDataRender workList={workList}/>
+      <PreReceivedDataRender workList={workList} />
       <ToastContainer autoClose={1000} />
     </div>
   )
