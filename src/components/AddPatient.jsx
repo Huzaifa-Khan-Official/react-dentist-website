@@ -6,27 +6,18 @@ import PreReceivedForm from './PreReceivedForm';
 
 
 
+const addPatientValidation = object().shape(
+  {
+    name: string().required(<p className='mb-0 mt-1 text-danger'>Patient name is required.</p>),
+    totalAmount: number().required(<p className='mb-0 mt-1 text-danger'>Total amount is required.</p>),
+    workList: array().required("Please select atleast one treatment.")
+  }
+)
+
 function AddPatient({ addPatientBtn, workList }) {
   let [isPreReceived, setIsPreReceived] = useState(false);
 
-  const addPatientValidation = object().shape(
-    isPreReceived ?
-      {
-        name: string().required(<p className='mb-0 mt-1 text-danger'>Patient name is required.</p>),
-        totalAmount: number().required(<p className='mb-0 mt-1 text-danger'>Total amount is required.</p>),
-        receivedAmount: number().required(<p className='mb-0 mt-1 text-danger'>Received amount is required.</p>),
-        preReceivedAmount: number().required(<p className='mb-0 mt-1 text-danger'>Pre Received amount is required.</p>),
-        balanceAmount: number().required(<p className='mb-0 mt-1 text-danger'>Balance amount is required.</p>),
-        workList: array().required("Please select atleast one treatment.")
-      } :
-      {
-        name: string().required(<p className='mb-0 mt-1 text-danger'>Patient name is required.</p>),
-        totalAmount: number().required(<p className='mb-0 mt-1 text-danger'>Total amount is required.</p>),
-        workList: array().required("Please select atleast one treatment.")
-      }
-  )
 
-  console.log(isPreReceived);
   return (
     <div>
       <Modal>
@@ -36,27 +27,19 @@ function AddPatient({ addPatientBtn, workList }) {
         </div>
 
         {
-          isPreReceived ? <PreReceivedForm workList={workList} /> :
+          isPreReceived ? <PreReceivedForm workList={workList} setIsPreReceived={setIsPreReceived}/> :
             <Formik
               validationSchema={addPatientValidation}
               initialValues={
-                isPreReceived ? {
+                {
                   name: "",
                   workList: [],
                   totalAmount: "",
-                  receivedAmount: "",
-                  preReceivedAmount: "",
-                  balanceAmount: ""
-                } :
-                  {
-                    name: "",
-                    workList: [],
-                    totalAmount: "",
-                  }
+                }
               }
 
               onSubmit={(values, { resetForm }) => {
-                isPreReceived ? console.log(values) : addPatientBtn(values);
+                addPatientBtn(values);
                 resetForm();
               }}
 
