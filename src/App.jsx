@@ -238,7 +238,7 @@ function App() {
           </div>
         )}
       </div>
-      <PreReceivedDataRender />
+      <PreReceivedDataRender workList={workList}/>
       <ToastContainer autoClose={1000} />
     </div>
   )

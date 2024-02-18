@@ -54,26 +54,24 @@ export default function PreReceivedForm({ workList, setIsPreReceived }) {
             try {
                 window.$('#exampleModal').modal('hide');
                 setIsPreReceived(false);
-                // toast.success("Patient added successfully!");
+                toast.success("Patient added successfully!");
 
-                // const patientsRef = collection(db, "preReceivedPatients");
+                const patientsRef = collection(db, "preReceivedPatients");
 
-                // const patientTime = moment(time).format('Do MMMM YYYY, h:mm:ss a');
-                // const patientData = {
-                //     name: patientName,
-                //     contactNo: contactNo,
-                //     workList: selectedTreatments,
-                //     totalAmount: totalAmount,
-                //     receivedAmount: receivedAmount,
-                //     preReceivedAmount: preReceivedAmount,
-                //     balanceAmount: balanceAmount,
-                //     patientTime: patientTime,
-                //     date: date  
-                // }
-                // await addDoc(patientsRef, patientData);
+                const patientTime = moment(time).format('Do MMMM YYYY, h:mm:ss a');
+                const patientData = {
+                    name: patientName,
+                    contactNo: contactNo,
+                    workList: selectedTreatments,
+                    totalAmount: totalAmount,
+                    receivedAmount: receivedAmount,
+                    preReceivedAmount: preReceivedAmount,
+                    balanceAmount: balanceAmount,
+                    patientTime: patientTime,
+                    date: date
+                }
+                await addDoc(patientsRef, patientData);
 
-                // Here you can process the form submission, e.g., send data to backend
-                // Reset form fields after submission if needed
                 setPatientName('');
                 setSelectedTreatments([]);
                 setTotalAmount(0);
@@ -105,7 +103,7 @@ export default function PreReceivedForm({ workList, setIsPreReceived }) {
                 <label className='form-label'>
                     Contact No.
                 </label>
-                <PatternFormat className="form-control" format="03 (###) #######" allowEmptyFormatting mask="_" onChange={(e) => setContactNo(e.target.value)}  value={contactNo}/>
+                <PatternFormat className="form-control" format="03 (###) #######" allowEmptyFormatting mask="_" onChange={(e) => setContactNo(e.target.value)} value={contactNo} />
             </div>
 
             <div className="inputDiv mt-3">

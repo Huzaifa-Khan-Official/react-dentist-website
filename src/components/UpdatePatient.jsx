@@ -75,7 +75,8 @@ function UpdatePatient({ uptPatient, collectionName, workList, getAllData }) {
                                         />
                                         {singlework.work}
                                     </label>
-                                ))}
+                                ))
+                        }
                     </div>
                 </div>
                 <div className="inputDiv mt-3">

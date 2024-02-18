@@ -5,9 +5,11 @@ import { db } from '../config/firebase';
 import { IoSearchCircleSharp } from 'react-icons/io5';
 import PatientNotAdded from './PatientNotAdded';
 import PreReceivedPateintCard from './PreReceivedPateintCard';
+import UptPreRecPatient from './UptPreRecPatient';
 
-export default function PreReceivedDataRender() {
+export default function PreReceivedDataRender({ workList }) {
     const [preReceivedData, setPreReceivedData] = useState([]);
+    let [updatePatient, setUpdatePatient] = useState([]);
 
 
     const getPreReceivedPatientData = () => {
@@ -59,8 +61,14 @@ export default function PreReceivedDataRender() {
         getPreReceivedPatientData();
     }, []);
 
+
+    const uptPreRecPatient = (patient) => {
+        setUpdatePatient(patient);
+    }
+
     return (
         <div className='px-lg-5 px-4 py-4'>
+            <UptPreRecPatient updatePatient={updatePatient} workList={workList} />
             <h1>Pre Received Patient Details:</h1>
 
             <div className="searchDiv d-flex justify-content-center m-auto mt-4">
@@ -99,7 +107,9 @@ export default function PreReceivedDataRender() {
                                 {
                                     preReceivedData.map((patient, i) => {
                                         return (
-                                            <PreReceivedPateintCard key={patient.id} patient={patient} index={i} />
+                                            <PreReceivedPateintCard key={patient.id} patient={patient} index={i}
+                                                uptPreRecPatient={uptPreRecPatient}
+                                            />
                                         )
                                     })
                                 }

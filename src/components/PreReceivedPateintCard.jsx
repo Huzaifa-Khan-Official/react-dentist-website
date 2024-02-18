@@ -6,15 +6,14 @@ import { db } from '../config/firebase'
 import { toast } from 'react-toastify'
 
 
-export default function PreReceivedPateintCard({ patient, index, collectionName, uptatedPatient, getAllData }) {
-    
+export default function PreReceivedPateintCard({ patient, index, uptPreRecPatient }) {
+
     const deletePatient = async (id) => {
         try {
-            await deleteDoc(doc(db, collectionName, id));
+            await deleteDoc(doc(db, "preReceivedPatients", id));
             toast.success("Patient deleted successfully!");
-            getAllData();
         } catch (error) {
-            console.log(error);
+            toast.error(error.message);
         }
     }
 
@@ -23,7 +22,7 @@ export default function PreReceivedPateintCard({ patient, index, collectionName,
             <th scope="row">{index + 1}</th>
             <td className='workerNameData'>{patient.name}</td>
             <td className='workerNameData'>{patient.contactNo}</td>
-            <td className='workerTimeData'>{patient.date}</td>
+            <td className='preReceivedDateData'>{patient.date}</td>
             <td className='WLtableData'>{patient.workList.join(", ")}</td>
             <td className='workerNameData'>{+patient.receivedAmount + +patient.preReceivedAmount}</td>
             <td className='workerNameData'>{patient.totalAmount}</td>
@@ -31,8 +30,9 @@ export default function PreReceivedPateintCard({ patient, index, collectionName,
             <td className='tableData'>
                 <div className="iconsDiv">
                     <FaTrash className='iconClass' onClick={() => deletePatient(patient.id)} />
-                    <FaEdit className='iconClass' onClick={() => uptatedPatient(patient, collectionName)}
-                        data-bs-toggle="modal" data-bs-target="#updateModal"
+                    <FaEdit className='iconClass'
+                        onClick={() => uptPreRecPatient(patient)}
+                        data-bs-toggle="modal" data-bs-target="#uptPreRecModal"
                     />
                 </div>
             </td>
