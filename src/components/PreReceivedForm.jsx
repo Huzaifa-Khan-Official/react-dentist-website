@@ -3,10 +3,12 @@ import moment from 'moment';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { db } from '../config/firebase';
+import { PatternFormat } from 'react-number-format';
 
 export default function PreReceivedForm({ workList, setIsPreReceived }) {
     // State variables for form inputs and calculations
     const [patientName, setPatientName] = useState('');
+    const [contactNo, setContactNo] = useState("");
     const [selectedTreatments, setSelectedTreatments] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
     const [receivedAmount, setReceivedAmount] = useState(0);
@@ -46,29 +48,30 @@ export default function PreReceivedForm({ workList, setIsPreReceived }) {
 
     // Function to handle form submission
     const handleFormSubmit = async () => {
-        if (!patientName || !totalAmount || !receivedAmount || !preReceivedAmount || !balanceAmount || !selectedTreatments) {
+        if (!patientName || !totalAmount || !receivedAmount || !preReceivedAmount || !balanceAmount || !selectedTreatments || !contactNo) {
             toast.error("Please fill all the fields!");
         } else {
             try {
                 window.$('#exampleModal').modal('hide');
                 setIsPreReceived(false);
-                toast.success("Patient added successfully!");
+                // toast.success("Patient added successfully!");
 
-                const patientsRef = collection(db, `${month}/${date}/preReceivedPatients/`);
+                // const patientsRef = collection(db, "preReceivedPatients");
 
-                const patientTime = moment(time).format('Do MMMM YYYY, h:mm:ss a');
-                const patientData = {
-                    name: patientName,
-                    workList: selectedTreatments,
-                    totalAmount: totalAmount,
-                    receivedAmount: receivedAmount,
-                    preReceivedAmount: preReceivedAmount,
-                    balanceAmount: balanceAmount,
-                    patientTime: patientTime
-                }
-                await addDoc(patientsRef, patientData);
+                // const patientTime = moment(time).format('Do MMMM YYYY, h:mm:ss a');
+                // const patientData = {
+                //     name: patientName,
+                //     contactNo: contactNo,
+                //     workList: selectedTreatments,
+                //     totalAmount: totalAmount,
+                //     receivedAmount: receivedAmount,
+                //     preReceivedAmount: preReceivedAmount,
+                //     balanceAmount: balanceAmount,
+                //     patientTime: patientTime,
+                //     date: date  
+                // }
+                // await addDoc(patientsRef, patientData);
 
-                console.log("patient added");
                 // Here you can process the form submission, e.g., send data to backend
                 // Reset form fields after submission if needed
                 setPatientName('');
@@ -97,6 +100,12 @@ export default function PreReceivedForm({ workList, setIsPreReceived }) {
                     value={patientName}
                     onChange={(e) => setPatientName(e.target.value)}
                 />
+            </div>
+            <div className="mb-3 mt-3">
+                <label className='form-label'>
+                    Contact No.
+                </label>
+                <PatternFormat className="form-control" format="03 (###) #######" allowEmptyFormatting mask="_" onChange={(e) => setContactNo(e.target.value)}  value={contactNo}/>
             </div>
 
             <div className="inputDiv mt-3">

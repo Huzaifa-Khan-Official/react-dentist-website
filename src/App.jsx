@@ -12,6 +12,7 @@ import UpdateModal from './components/UpdateModal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment';
+import PreReceivedDataRender from './components/PreReceivedDataRender';
 
 function App() {
   const [patients, setPatients] = useState([]);
@@ -237,6 +238,7 @@ function App() {
           </div>
         )}
       </div>
+      <PreReceivedDataRender />
       <ToastContainer autoClose={1000} />
     </div>
   )

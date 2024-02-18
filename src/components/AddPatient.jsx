@@ -22,7 +22,7 @@ function AddPatient({ addPatientBtn, workList }) {
     <div>
       <Modal>
         <div className="form-check form-switch">
-          <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onChange={(e) => setIsPreReceived(e.target.checked)} />
+          <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onChange={(e) => setIsPreReceived(e.target.checked)} checked={isPreReceived ? true : false}/>
           <label className="form-check-label" htmlFor="flexSwitchCheckDefault" >Pre Received Amount?</label>
         </div>
 
