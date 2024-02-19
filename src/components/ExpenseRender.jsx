@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export default function ExpenseRender({ allData, isExpenseAdded }) {
+export default function ExpenseRender({ allData }) {
     let [expenseTotal, setExpenseTotal] = useState(0);
 
     const getExpenseTotal = () => {

@@ -38,6 +38,7 @@ function App() {
         return doc.id
       });
 
+      daysList.push(date);
       setDaysArr(daysList.reverse());
     })
   }
@@ -146,6 +147,7 @@ function App() {
       })
 
     );
+    console.log(data);
     setPatients(data);
   };
 

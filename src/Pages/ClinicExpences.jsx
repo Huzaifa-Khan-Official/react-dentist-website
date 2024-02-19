@@ -42,13 +42,14 @@ export default function ClinicExpences() {
 
 
     const getDays = () => {
-        const q = collection(db, `${month}/`);
+        const q = collection(db, month);
 
         onSnapshot(q, (snapshot) => {
             const daysList = snapshot.docs.map((doc) => {
                 return doc.id
             });
 
+            daysList.push(date);
             setDaysArr(daysList.reverse());
         })
     };
@@ -60,7 +61,7 @@ export default function ClinicExpences() {
         await Promise.all(
             daysArr.map(async (v) => {
                 const patientsRef = collection(db, `${month}/${v}/dailyExpenseData/`);
-                const q = query(patientsRef);
+                const q = query(patientsRef, orderBy("time", "desc"));
 
                 const querySnapshot = await getDocs(q);
                 querySnapshot.forEach((doc) => {
@@ -93,7 +94,7 @@ export default function ClinicExpences() {
 
 
             <AddClinicExpense workerList={workerList} setIsExpenseAdded={setIsExpenseAdded} isExpenseAdded={isExpenseAdded} />
-            <ExpenseRender allData={allData} isExpenseAdded={isExpenseAdded}/>
+            <ExpenseRender allData={allData} />
 
             <ToastContainer autoClose={1500} />
         </div>

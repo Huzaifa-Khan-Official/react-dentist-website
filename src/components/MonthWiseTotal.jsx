@@ -1,76 +1,89 @@
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot, orderBy, query } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { db } from '../config/firebase';
 import moment from 'moment';
 
 export default function MonthWiseTotal() {
     let [allData, setAllData] = useState([]);
+    let [daysArr, setDaysArr] = useState([]);
+
     const time = new Date;
+    const date = moment(time).format("Do MMMM YYYY");
+    const month = moment(time).format("MMMM YYYY");
 
-    // useEffect(() => {
 
-    //     const getYearData = () => {
-    //         const month = moment(time).format("MMMM YYYY");
-    //         const q = collection(db, month);
+    const getDays = () => {
+        const q = collection(db, month);
 
-    //         let allData = [];
-    //         onSnapshot(q, (data) => {
-    //             data.docChanges().forEach((singleData) => {
-    //                 const date = singleData.doc.id;
-    //                 const q = query(collection(db, `${month}/${date}/patients`), orderBy("patientTime"));
-    //                 const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    //                     querySnapshot.forEach((doc) => {
-    //                         console.log(doc.data().totalAmount);
-    //                         console.log(date);
-    //                         // allData.push(doc.data());
-    //                     });
-    //                 });
+        onSnapshot(q, (snapshot) => {
+            const daysList = snapshot.docs.map((doc) => {
+                if (doc.id != "total") {
+                    return doc.id
+                }
+            });
 
-    //                 // allData.push(singleData.doc.data());
-    //             });
+            daysList.push(date);
+            setDaysArr(daysList.reverse());
+        })
+    };
 
-    //             // const dayList = data.docs.map((doc) => {
-    //             //     console.log(doc.id);
-    //             // })
-    //         });
+    const fetchData = async () => {
 
-    //         setAllData(allData);
-    //         return allData;
-    //     }
+        const newData = [];
 
-    //     getYearData()
-    // }, [])
 
+        await Promise.all(
+            daysArr.map(async (v) => {
+                const patientsRef = collection(db, `${month}/${v}/patients/`);
+                const q = query(patientsRef, orderBy("patientTime"));
+
+                const querySnapshot = await getDocs(q);
+                let totalAmount = 0;
+                querySnapshot.forEach((doc) => {
+                    totalAmount += doc.data().totalAmount;
+                });
+                newData.push({ v, totalAmount });
+                setAllData([...newData]);
+            })
+
+        );
+
+        setAllData(newData);
+
+
+        // const newData = [];
+
+        // const unsubscribeSnapshot = onSnapshot(q, (data) => {
+        //     data.docChanges().forEach(async (singleData) => {
+        //         const date = singleData.doc.id;
+        //         if (!(date == "total")) {
+        //             const patientsQ = query(collection(db, `${month}/${date}/patients`), orderBy("patientTime"));
+        //             const unsubscribePatients = onSnapshot(patientsQ, (querySnapshot) => {
+        //                 let totalAmount = 0;
+        //                 querySnapshot.forEach((doc) => {
+        //                     totalAmount += doc.data().totalAmount;
+        //                 });
+        //                 newData.push({ date, totalAmount });
+        //                 setAllData([...newData]); // Update state here or after the loop finishes
+        //             });
+        //         }
+
+        //     });
+        // });
+
+        // setAllData(newData);
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            const month = moment().format("MMMM YYYY");
-            const q = collection(db, month);
-
-            const newData = [];
-
-            const unsubscribeSnapshot = onSnapshot(q, (data) => {
-                data.docChanges().forEach(async (singleData) => {
-                    const date = singleData.doc.id;
-                    if (!(date == "total")) {
-                        const patientsQ = query(collection(db, `${month}/${date}/patients`), orderBy("patientTime"));
-                        const unsubscribePatients = onSnapshot(patientsQ, (querySnapshot) => {
-                            let totalAmount = 0;
-                            querySnapshot.forEach((doc) => {
-                                totalAmount += doc.data().totalAmount;
-                            });
-                            newData.push({ date, totalAmount });
-                            setAllData([...newData]); // Update state here or after the loop finishes
-                        });
-                    }
-
-                });
-            });
-            setAllData(newData);
-        };
-
         fetchData();
+        getDays();
     }, []);
+
+    useEffect(() => {
+        fetchData();
+    }, [daysArr]);
+
+    console.log(allData);
 
     return (
         <div className='px-md-5 px-4' style={{ display: allData.length > 1 ? "block" : "none" }}>
@@ -109,13 +122,16 @@ export default function MonthWiseTotal() {
                                     <tbody>
                                         {
                                             allData.map((v, i) => {
-                                                return (
-                                                    <tr key={i}>
-                                                        <th scope="row">{i + 1}</th>
-                                                        <td className='monthWiseDate'>{v.date}</td>
-                                                        <td className='tableData'>{v.totalAmount}</td>
-                                                    </tr>
-                                                )
+                                                if (v.v) {
+                                                    return (
+                                                        <tr key={i}>
+                                                            <th scope="row">{i + 1}</th>
+                                                            <td className='monthWiseDate'>{v.v}</td>
+                                                            <td className='tableData'>{v.totalAmount}</td>
+                                                        </tr>
+
+                                                    )
+                                                }
                                             })
                                         }
                                     </tbody>
