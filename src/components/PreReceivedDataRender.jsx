@@ -106,11 +106,13 @@ export default function PreReceivedDataRender({ workList }) {
                             <tbody>
                                 {
                                     preReceivedData.map((patient, i) => {
-                                        return (
-                                            <PreReceivedPateintCard key={patient.id} patient={patient} index={i}
-                                                uptPreRecPatient={uptPreRecPatient}
-                                            />
-                                        )
+                                        if (!(patient.balanceAmount == 0)) {
+                                            return (
+                                                <PreReceivedPateintCard key={patient.id} patient={patient} index={i}
+                                                    uptPreRecPatient={uptPreRecPatient}
+                                                />
+                                            )
+                                        }
                                     })
                                 }
                             </tbody>

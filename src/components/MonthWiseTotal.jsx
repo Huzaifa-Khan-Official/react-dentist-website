@@ -49,29 +49,6 @@ export default function MonthWiseTotal() {
         );
 
         setAllData(newData);
-
-
-        // const newData = [];
-
-        // const unsubscribeSnapshot = onSnapshot(q, (data) => {
-        //     data.docChanges().forEach(async (singleData) => {
-        //         const date = singleData.doc.id;
-        //         if (!(date == "total")) {
-        //             const patientsQ = query(collection(db, `${month}/${date}/patients`), orderBy("patientTime"));
-        //             const unsubscribePatients = onSnapshot(patientsQ, (querySnapshot) => {
-        //                 let totalAmount = 0;
-        //                 querySnapshot.forEach((doc) => {
-        //                     totalAmount += doc.data().totalAmount;
-        //                 });
-        //                 newData.push({ date, totalAmount });
-        //                 setAllData([...newData]); // Update state here or after the loop finishes
-        //             });
-        //         }
-
-        //     });
-        // });
-
-        // setAllData(newData);
     };
 
     useEffect(() => {
@@ -82,8 +59,6 @@ export default function MonthWiseTotal() {
     useEffect(() => {
         fetchData();
     }, [daysArr]);
-
-    console.log(allData);
 
     return (
         <div className='px-md-5 px-4' style={{ display: allData.length > 1 ? "block" : "none" }}>

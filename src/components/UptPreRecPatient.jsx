@@ -53,7 +53,7 @@ export default function UptPreRecPatient({ updatePatient, workList }) {
 
     // Function to handle form submission
     const handleFormSubmit = async () => {
-        if (!patientName || !totalAmount || !receivedAmount || !preReceivedAmount || !balanceAmount || !selectedTreatments || !contactNo) {
+        if (!patientName || !totalAmount || !receivedAmount || !preReceivedAmount || !selectedTreatments || !contactNo) {
             toast.error("Please fill all the fields!");
         } else {
             try {

@@ -1,8 +1,17 @@
 import React from 'react'
 import loaderGif from "../assets/loaderGif.png";
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import { auth } from '../config/firebase';
+import { toast } from 'react-toastify';
 
 function Navbar() {
+    const LogoutBtn = () => {
+        signOut(auth).then(async () => {
+            toast.success("You are not allowed to visit this site.");
+            window.location.reload();
+        });
+    }
     return (
         <div>
             <nav className="navbar navbar-expand-sm bg-body-tertiary">
@@ -32,6 +41,9 @@ function Navbar() {
                             </li>
                             <li className="nav-item">
                                 <Link to={"/clinic-expences"} className="nav-link">Clinic Expences</Link>
+                            </li>
+                            <li className="nav-item">
+                                <button className='nav-link' onClick={LogoutBtn}>Logout</button>
                             </li>
                         </ul>
                     </div>
