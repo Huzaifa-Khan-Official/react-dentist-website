@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaGooglePlus } from "react-icons/fa6";
+import { FcGoogle } from "react-icons/fc";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from '../config/firebase';
 import { ToastContainer, toast } from 'react-toastify';
@@ -25,7 +25,7 @@ export default function Login() {
                 <h1>Login</h1>
             </div>
             <div className="loginBtnDiv d-flex justify-content-center">
-                <button onClick={loginBtn}><FaGooglePlus /> continue with Google</button>
+                <button onClick={loginBtn}><FcGoogle /> continue with Google</button>
             </div>
 
             <ToastContainer autoClose={2000}/>

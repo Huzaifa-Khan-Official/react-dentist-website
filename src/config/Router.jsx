@@ -14,13 +14,14 @@ export default function Router() {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             const uid = user.uid;
-            if (user.email !== "m.huzaifakhan2004@gmail.com") {
-                signOut(auth).then(async () => {
-                    toast.success("You are not allowed to visit this site.")
-                });
-            } else {
-                setIsUser(true);
-            }
+            setIsUser(true);
+            // if (user.email !== "m.huzaifakhan2004@gmail.com") {
+            //     signOut(auth).then(async () => {
+            //         toast.success("You are not allowed to visit this site.")
+            //     });
+            // } else {
+            //     setIsUser(true);
+            // }
         }
     });
 
