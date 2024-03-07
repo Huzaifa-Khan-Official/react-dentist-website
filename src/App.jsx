@@ -62,7 +62,6 @@ function App() {
       }
       await addDoc(patientsRef, patientData);
       setPatientAdded(!patientAdded);
-      setLoader(false);
     } catch (error) {
     }
   }
@@ -128,7 +127,6 @@ function App() {
 
   const getAllData = async () => {
 
-    setLoader(true)
     if (daysArr) {
       setIsDaysArr(true);
     }
@@ -153,7 +151,6 @@ function App() {
 
     );
     setPatients(data);
-    setLoader(false);
   };
 
   const filteredPatients = async (e) => {
@@ -187,6 +184,8 @@ function App() {
 
     setFilteredArr(filteredData);
   };
+
+  console.log(loader);
   return (
     <div>
       <Spinner />

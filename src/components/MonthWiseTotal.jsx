@@ -1,9 +1,12 @@
 import { collection, getDocs, onSnapshot, orderBy, query } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { db } from '../config/firebase';
 import moment from 'moment';
+import Loader from '../Context/Context';
 
 export default function MonthWiseTotal() {
+    const [loader, setLoader] = useContext(Loader);
+
     let [allData, setAllData] = useState([]);
     let [daysArr, setDaysArr] = useState([]);
 
