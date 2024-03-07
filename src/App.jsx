@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
 import { db } from "./config/firebase"
 import { addDoc, collection, onSnapshot, query, orderBy, setDoc, doc, getDocs } from "firebase/firestore";
@@ -13,6 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment';
 import PreReceivedDataRender from './components/PreReceivedDataRender';
+import Loader from './Context/Context';
 
 function App() {
   const [patients, setPatients] = useState([]);
@@ -25,7 +26,8 @@ function App() {
   let [patientAdded, setPatientAdded] = useState(false);
   const [filtering, setFiltering] = useState(false);
   let [filteredArr, setFilteredArr] = useState([]);
-
+  const [loader, setLoader] = useContext(Loader);
+  
   const time = new Date;
   const date = moment(time).format("Do MMMM YYYY");
   const month = moment(time).format("MMMM YYYY");

@@ -7,9 +7,11 @@ import Login from '../Pages/Login'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from './firebase'
 import { toast } from 'react-toastify'
+import Loader from '../Context/Context'
 
 export default function Router() {
     const [isUser, setIsUser] = useState(false);
+    const [loader, setLoader] = useState(false);
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -28,12 +30,14 @@ export default function Router() {
     return (
         <>
             <BrowserRouter>
-                <Routes>
-                    <Route path='/' element={isUser ? <App /> : <Navigate to="/login" />} />
-                    <Route path='/dashboard' element={isUser ? <Dashboard /> : <Navigate to="/login" />} />
-                    <Route path='/clinic-expences' element={isUser ? <ClinicExpences /> : <Navigate to="/login" />} />
-                    <Route path="/login" element={isUser ? <Navigate to="/" /> : <Login />} />
-                </Routes>
+                <Loader.Provider value={[loader, setLoader]}>
+                    <Routes>
+                        <Route path='/' element={isUser ? <App /> : <Navigate to="/login" />} />
+                        <Route path='/dashboard' element={isUser ? <Dashboard /> : <Navigate to="/login" />} />
+                        <Route path='/clinic-expences' element={isUser ? <ClinicExpences /> : <Navigate to="/login" />} />
+                        <Route path="/login" element={isUser ? <Navigate to="/" /> : <Login />} />
+                    </Routes>
+                </Loader.Provider>
             </BrowserRouter>
         </>
     )
