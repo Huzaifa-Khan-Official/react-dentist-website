@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment';
 import PreReceivedDataRender from './components/PreReceivedDataRender';
 import Loader from './Context/Context';
+import Spinner from './components/Spinner';
 
 function App() {
   const [patients, setPatients] = useState([]);
@@ -27,7 +28,7 @@ function App() {
   const [filtering, setFiltering] = useState(false);
   let [filteredArr, setFilteredArr] = useState([]);
   const [loader, setLoader] = useContext(Loader);
-  
+
   const time = new Date;
   const date = moment(time).format("Do MMMM YYYY");
   const month = moment(time).format("MMMM YYYY");
@@ -61,6 +62,7 @@ function App() {
       }
       await addDoc(patientsRef, patientData);
       setPatientAdded(!patientAdded);
+      setLoader(false);
     } catch (error) {
     }
   }
@@ -126,6 +128,7 @@ function App() {
 
   const getAllData = async () => {
 
+    setLoader(true)
     if (daysArr) {
       setIsDaysArr(true);
     }
@@ -150,6 +153,7 @@ function App() {
 
     );
     setPatients(data);
+    setLoader(false);
   };
 
   const filteredPatients = async (e) => {
@@ -183,9 +187,9 @@ function App() {
 
     setFilteredArr(filteredData);
   };
-
   return (
     <div>
+      <Spinner />
       <Navbar />
       <UpdatePatient uptPatient={uptPatient} collectionName={collectionName} workList={workList} getAllData={getAllData} />
       <div className="headingDiv">
